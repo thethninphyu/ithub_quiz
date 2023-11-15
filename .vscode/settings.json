@@ -1,0 +1,7 @@
+{
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "editor.acceptSuggestionOnCommitCharacter": false,
+    "accessibility.verbosity.inlineChat": false,
+    "accessibility.verbosity.inlineCompletions": false,
+    "workbench.tree.renderIndentGuides": "none"
+}
