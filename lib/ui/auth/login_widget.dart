@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:ithub_quiz/constants/colors.dart';
+import 'package:ithub_quiz/ui/home/module/home_module.dart';
+import 'package:ithub_quiz/ui/home/module/home_routes.dart';
+import 'package:ithub_quiz/utils/app_router.dart';
 
 class LoginWidget extends StatefulWidget {
   const LoginWidget({super.key});
@@ -24,7 +28,9 @@ class _LoginWidgetState extends State<LoginWidget> {
       ),
       body: Container(
           child: MaterialButton(
-        onPressed: () {},
+        onPressed: () {
+          AppRouter.changeRoute<HomeModule>(HomeRoutes.home);
+        },
         child: Text("Heyy Click Me"),
       )),
     );
