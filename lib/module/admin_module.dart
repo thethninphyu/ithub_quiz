@@ -1,10 +1,9 @@
 
-
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:ithub_quiz/module/admin_module.dart';
+import 'package:ithub_quiz/module/home_module.dart';
 
-class AppModule extends Module {
-
+class AdminModule extends Module{
+  
 
 @override
   List<Bind<Object>> get binds => [
@@ -13,8 +12,7 @@ class AppModule extends Module {
 
   @override
   List<ModularRoute> get routes => [
-  ModuleRoute('/', module: AdminModule()),
-
+ModuleRoute('/home', module: HomeModule()),
   ];
 
 }

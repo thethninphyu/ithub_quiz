@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ithub_quiz/const/const.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -23,11 +24,11 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   List<BottomNavigationBarItem> navMenu = [
-    BottomNavigationBarItem(
+    const BottomNavigationBarItem(
         icon: Icon(Icons.home), backgroundColor: Colors.blue, label: 'Home'),
-    BottomNavigationBarItem(
+    const BottomNavigationBarItem(
         icon: Icon(Icons.menu), backgroundColor: Colors.blue, label: 'Menu'),
-    BottomNavigationBarItem(
+    const BottomNavigationBarItem(
         icon: Icon(Icons.account_circle),
         backgroundColor: Colors.blue,
         label: 'Profile'),
@@ -55,11 +56,11 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             Container(
-              decoration: BoxDecoration(color: AppColors.secondaryColor),
+              decoration: const BoxDecoration(color: AppColors.secondaryColor),
               height: height * 0.25,
               width: width,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 50, left: 15, right: 15),
+              child: const Padding(
+                padding: EdgeInsets.only(top: 50, left: 15, right: 15),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
