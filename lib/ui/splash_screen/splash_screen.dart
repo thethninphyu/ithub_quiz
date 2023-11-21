@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ithub_quiz/constants/colors.dart';
+import 'package:ithub_quiz/module/app_routes.dart';
+import 'package:ithub_quiz/ui/auth/module/auth_module.dart';
+import 'package:ithub_quiz/utils/app_router.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -9,6 +12,12 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    AppRouter.changeRoute<AuthModule>(AppRoutes.root);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
