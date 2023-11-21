@@ -19,9 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
     "assets/kotlin.jpg",
     "assets/php.jpg"
   ];
-  List title = [
-    "Flutter","Node Js","Kotlin","PhP"
-  ];
+  List title = ["Flutter", "Node Js", "Kotlin", "PhP"];
 
   List<BottomNavigationBarItem> navMenu = [
     const BottomNavigationBarItem(
@@ -59,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
               decoration: const BoxDecoration(color: AppColors.secondaryColor),
               height: height * 0.25,
               width: width,
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.only(top: 50, left: 15, right: 15),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,18 +110,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                     blurRadius: 1,
                                     spreadRadius: 1)
                               ]),
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 15,bottom: 15),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                  Image.asset(imgSrc[index],
-                                  width : 100),
-                                  Text(title[index],style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),)
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 15, bottom: 15),
+                            child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Image.asset(imgSrc[index], width: 100),
+                                  Text(
+                                    title[index],
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  )
                                 ]),
-                              ),
+                          ),
                         ),
-                     );
+                      );
                     },
                     itemCount: imgSrc.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -133,7 +136,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     shrinkWrap: true,
                   ),
                 ),
-                
               ),
             ),
           ],
