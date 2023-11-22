@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:ithub_quiz/module/app_routes.dart';
+import 'package:ithub_quiz/ui/admin_screen/module/admin_module.dart';
+import 'package:ithub_quiz/ui/admin_screen/module/admin_route.dart';
+import 'package:ithub_quiz/ui/admin_screen/module/question_create/create_question_module.dart';
+import 'package:ithub_quiz/ui/app_routes.dart';
 import 'package:ithub_quiz/ui/auth/module/auth_module.dart';
 import 'package:ithub_quiz/ui/home/module/home_module.dart';
+import 'package:ithub_quiz/ui/home/module/home_routes.dart';
 
 class AppRouter {
   static void _goToNextPage({
@@ -35,8 +39,13 @@ class AppRouter {
         tempRoute = AppRoutes.login;
         break;
       case HomeModule:
-        tempRoute = AppRoutes.home;
+        tempRoute = AppRoutes.root;
         break;
+      case AdminModule:
+        tempRoute = AppRoutes.root;
+        break;
+      case CreateQuestionModule:
+        tempRoute = AppRoutes.root + AdminRoutes.create;
     }
 
     _goToNextPage(
