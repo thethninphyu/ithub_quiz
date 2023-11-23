@@ -59,21 +59,19 @@ class _HomeScreenState extends State<HomeScreen> {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
     return Scaffold(
-    
       body: Container(
         color: AppColors.secondaryColor,
         child: Column(
           children: [
             Container(
-              decoration:
-                  const BoxDecoration(color: AppColors.secondaryColor),
+              decoration: const BoxDecoration(color: AppColors.secondaryColor),
               height: height * 0.25,
               width: width,
-              child: const Padding(
-                padding: EdgeInsets.only(top: 50, left: 15, right: 15),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 50, left: 15, right: 15),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: const [
                       Text(
                         'Dashboard',
                         style: TextStyle(
@@ -126,8 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     spreadRadius: 1)
                               ]),
                           child: Padding(
-                            padding:
-                                const EdgeInsets.only(top: 15, bottom: 15),
+                            padding: const EdgeInsets.only(top: 15, bottom: 15),
                             child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
