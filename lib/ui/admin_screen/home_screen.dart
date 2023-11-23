@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ithub_quiz/constants/colors.dart';
-import 'package:ithub_quiz/ui/admin_screen/module/question_create/question_create_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -10,16 +9,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 0;
-  late PageController _pageController;
-
+  
   var width, height;
 
-  final screens = [
-    const HomeScreen(),
-    const QuestionCreateScreen(),
-  ];
-
+ 
   List imgSrc = [
     "assets/flutter.png",
     "assets/js.png",
@@ -42,25 +35,12 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   @override
-  void initState() {
-    _pageController = PageController(initialPage: _currentIndex);
-
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
     return Scaffold(
     
-      body: Container(
+    body: Container(
         color: AppColors.secondaryColor,
         child: Column(
           children: [
@@ -108,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 10),
+                  padding: const EdgeInsets.only(top: 10,bottom: 10),
                   child: GridView.builder(
                     itemBuilder: (context, index) {
                       return InkWell(
@@ -125,22 +105,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                     blurRadius: 1,
                                     spreadRadius: 1)
                               ]),
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(top: 15, bottom: 15),
-                            child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Image.asset(imgSrc[index], width: 100),
-                                  Text(
-                                    title[index],
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ]),
-                          ),
+                          child: Column(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Image.asset(imgSrc[index], width: 90),
+                                ),
+                                Text(
+                                  title[index],
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ]),
                         ),
                       );
                     },

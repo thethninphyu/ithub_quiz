@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:ithub_quiz/constants/colors.dart';
 import 'package:ithub_quiz/constants/strings.dart';
@@ -9,6 +10,7 @@ class IthubQuiz extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      builder: EasyLoading.init(),
       title: AppStrings.appName,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

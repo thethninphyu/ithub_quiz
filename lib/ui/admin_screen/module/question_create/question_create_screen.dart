@@ -44,13 +44,13 @@ class _AdminMenuScreenState extends State<QuestionCreateScreen> {
                           spreadRadius: 1),
                     ]),
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 15, bottom: 15),
+                  padding: const EdgeInsets.only(top: 10),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Image.asset(
                         imgSrc[index],
-                        width: 100,
+                        width: 90,
                       ),
                       Text(
                         title[index],

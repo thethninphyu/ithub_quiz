@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ithub_quiz/ui/admin_screen/admin_profile_screen.dart';
 import 'package:ithub_quiz/ui/admin_screen/home_screen.dart';
 import 'package:ithub_quiz/ui/admin_screen/module/question_create/question_create_screen.dart';
 
@@ -16,6 +17,7 @@ class _AdminPageScreenState extends State<AdminPageScreen> {
   final screens = [
     const HomeScreen(),
     const QuestionCreateScreen(),
+    const AdminProfileScreen()
   ];
   List title = ["Flutter", "Node Js", "Kotlin", "PhP"];
   List<BottomNavigationBarItem> navMenu = [

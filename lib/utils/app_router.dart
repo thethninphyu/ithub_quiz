@@ -6,7 +6,6 @@ import 'package:ithub_quiz/ui/admin_screen/module/question_create/create_questio
 import 'package:ithub_quiz/ui/app_routes.dart';
 import 'package:ithub_quiz/ui/auth/module/auth_module.dart';
 import 'package:ithub_quiz/ui/home/module/home_module.dart';
-import 'package:ithub_quiz/ui/home/module/home_routes.dart';
 
 class AppRouter {
   static void _goToNextPage({
