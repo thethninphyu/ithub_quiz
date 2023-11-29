@@ -23,6 +23,7 @@ class _AdminMenuScreenState extends State<QuestionCreateScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(title: const Text('Create Question Screen')),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -30,18 +31,21 @@ class _AdminMenuScreenState extends State<QuestionCreateScreen> {
           itemBuilder: (context, index) {
             return InkWell(
               onTap: (() {
-                AppRouter.changeRoute<CreateQuestionModule>(CreateQuestionRoutes.question);
+                AppRouter.changeRoute<CreateQuestionModule>(
+                    CreateQuestionRoutes.question);
               }),
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
+                  border: Border.all(width: 0.6,color: Colors.grey),
+                    borderRadius: BorderRadius.circular(10),
                     color: AppColors.primaryColor,
-                    boxShadow: const [
+                    boxShadow: [
                       BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 1,
-                          spreadRadius: 1),
+                          color: Colors.grey.withOpacity(0.5),
+                          offset: const Offset(0, 7),
+                          blurRadius: 0.3,
+                          spreadRadius: -2),
                     ]),
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10),
