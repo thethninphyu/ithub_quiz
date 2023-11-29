@@ -9,10 +9,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  
   var width, height;
 
- 
   List imgSrc = [
     "assets/flutter.png",
     "assets/js.png",
@@ -39,21 +37,19 @@ class _HomeScreenState extends State<HomeScreen> {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
     return Scaffold(
-    
-    body: Container(
+      body: Container(
         color: AppColors.secondaryColor,
         child: Column(
           children: [
             Container(
-              decoration:
-                  const BoxDecoration(color: AppColors.secondaryColor),
+              decoration: const BoxDecoration(color: AppColors.secondaryColor),
               height: height * 0.25,
               width: width,
-              child: const Padding(
-                padding: EdgeInsets.only(top: 50, left: 15, right: 15),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 50, left: 15, right: 15),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: const [
                       Text(
                         'Dashboard',
                         style: TextStyle(
@@ -88,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 10,bottom: 10),
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
                   child: GridView.builder(
                     itemBuilder: (context, index) {
                       return InkWell(
@@ -106,8 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     spreadRadius: 1)
                               ]),
                           child: Column(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
