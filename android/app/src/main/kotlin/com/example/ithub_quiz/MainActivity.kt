@@ -1,4 +1,4 @@
-package com.example.ithub_quiz
+package com.itvisionhub.ithub_quiz
 
 import io.flutter.embedding.android.FlutterActivity
 
