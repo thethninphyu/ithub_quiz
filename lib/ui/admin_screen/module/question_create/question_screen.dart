@@ -109,7 +109,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
     setState(() {
      // print("Remove index at ${answerRows}");
 
-      final ind=answerRows.removeAt(index);
+     answerRows.removeAt(index);
       // print("Remove index at ${ind}");
 
     });

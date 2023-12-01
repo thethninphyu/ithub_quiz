@@ -19,19 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
   List title = ["Flutter", "Node Js", "Kotlin", "PhP"];
 
-  List<BottomNavigationBarItem> navMenu = [
-    const BottomNavigationBarItem(
-        icon: Icon(Icons.home), backgroundColor: Colors.blue, label: 'Home'),
-    const BottomNavigationBarItem(
-        icon: Icon(Icons.create),
-        backgroundColor: Colors.blue,
-        label: 'Create Question'),
-    const BottomNavigationBarItem(
-        icon: Icon(Icons.account_circle),
-        backgroundColor: Colors.blue,
-        label: 'Profile'),
-  ];
-
+  
   @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
@@ -45,11 +33,11 @@ class _HomeScreenState extends State<HomeScreen> {
               decoration: const BoxDecoration(color: AppColors.secondaryColor),
               height: height * 0.25,
               width: width,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 50, left: 15, right: 15),
+              child: const Padding(
+                padding: EdgeInsets.only(top: 50, left: 15, right: 15),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
                         'Dashboard',
                         style: TextStyle(

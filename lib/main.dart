@@ -4,7 +4,9 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:ithub_quiz/app_widget.dart';
 import 'package:ithub_quiz/ui/app_module.dart';
 
-void main() {
+void main()  {
+  //WidgetsFlutterBinding.ensureInitialized();
+ // await Firebase.initializeApp();
   runApp(ModularApp(module: AppModule(), child: const IthubQuiz()));
   configLoading();
 }

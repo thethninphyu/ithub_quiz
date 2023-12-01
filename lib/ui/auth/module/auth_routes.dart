@@ -1,3 +1,4 @@
 class AuthRoutes {
-  static const String root = "/";
+  static const String root = "/splash";
+ 
 }
