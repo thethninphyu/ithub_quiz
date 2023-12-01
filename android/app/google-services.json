@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "852945114719",
+    "firebase_url": "https://ithubquiz-default-rtdb.firebaseio.com",
+    "project_id": "ithubquiz",
+    "storage_bucket": "ithubquiz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852945114719:android:8d4859f683ce098b1e2dea",
+        "android_client_info": {
+          "package_name": "com.itvisionhub.ithub_quiz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAexA59oBlXoXieBzOCe4OQSBfTf0htqqM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
