@@ -428,6 +428,10 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+
+#ignore dart tool file
+pubspec.lock
+build/
 .dart_tool/*
 
 .dart_tool
