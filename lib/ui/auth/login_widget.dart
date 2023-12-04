@@ -11,6 +11,8 @@ class LoginWidget extends StatefulWidget {
 }
 
 class _LoginWidgetState extends State<LoginWidget> {
+  final TextEditingController _controllerEmail = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     double baseWidth = 298;
