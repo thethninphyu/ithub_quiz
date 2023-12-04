@@ -19,7 +19,6 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
   List title = ["Flutter", "Node Js", "Kotlin", "PhP"];
 
-  
   @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
@@ -33,11 +32,11 @@ class _HomeScreenState extends State<HomeScreen> {
               decoration: const BoxDecoration(color: AppColors.secondaryColor),
               height: height * 0.25,
               width: width,
-              child: const Padding(
-                padding: EdgeInsets.only(top: 50, left: 15, right: 15),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 50, left: 15, right: 15),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: const [
                       Text(
                         'Dashboard',
                         style: TextStyle(
