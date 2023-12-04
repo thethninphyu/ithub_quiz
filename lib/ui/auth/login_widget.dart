@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:ithub_quiz/constants/colors.dart';
 
 class LoginWidget extends StatefulWidget {
@@ -93,7 +95,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                             ),
                           ),
                           Positioned(
-                             left: 120 * fem,
+                            left: 120 * fem,
                             top: 21.25 * fem,
                             child: Align(
                               child: SizedBox(
@@ -225,9 +227,17 @@ class _LoginWidgetState extends State<LoginWidget> {
                                   style: TextStyle(color: Colors.amber),
                                 )),
                           ),
-                          const Center(child: Text('OR',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),)),
                           const Center(
-                            child: Text('Sign In with',style: TextStyle(fontSize: 16),),
+                              child: Text(
+                            'OR',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
+                          )),
+                          const Center(
+                            child: Text(
+                              'Sign In with',
+                              style: TextStyle(fontSize: 16),
+                            ),
                           ),
                           const SizedBox(
                             height: 10,
@@ -236,41 +246,23 @@ class _LoginWidgetState extends State<LoginWidget> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               GestureDetector(
-                                child: Container(
-                                  height: 60,
-                                  width: 60,
-                                  decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: AppColors.primaryColor,
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color: Colors.black26,
-                                            offset: Offset(0, 2),
-                                            blurRadius: 6.0)
-                                      ],
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                              'assets/facebook.png'))),
+                                child: FaIcon(
+                                  FontAwesomeIcons.facebook,
+                                  size: 35,
+                                  color: HexColor("#3E529C"),
                                 ),
+                                onTap: () {},
                               ),
+                           
                               GestureDetector(
-                                child: Container(
-                                  height: 60,
-                                  width: 60,
-                                  decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: AppColors.primaryColor,
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color: Colors.black26,
-                                            offset: Offset(0, 2),
-                                            blurRadius: 6.0)
-                                      ],
-                                      image: DecorationImage(
-                                          image:
-                                              AssetImage('assets/google.png'))),
+                                child: FaIcon(
+                                  FontAwesomeIcons.google,
+                                  size: 35,
+                                  color: HexColor("#3E529C"),
                                 ),
-                              )
+                                onTap: () {},
+                              ),
+                           
                             ],
                           )
                         ],
@@ -280,6 +272,5 @@ class _LoginWidgetState extends State<LoginWidget> {
                 ],
               ),
             )));
-     
   }
 }
