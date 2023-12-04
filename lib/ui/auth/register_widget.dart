@@ -1,25 +1,21 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:ithub_quiz/constants/colors.dart';
 import 'package:ithub_quiz/ui/app_routes.dart';
 import 'package:ithub_quiz/ui/auth/module/auth_module.dart';
 import 'package:ithub_quiz/utils/app_router.dart';
 
-class LoginWidget extends StatefulWidget {
-  const LoginWidget({super.key});
+class RegisterWidget extends StatefulWidget {
+  const RegisterWidget({super.key});
 
   @override
-  State<LoginWidget> createState() => _LoginWidgetState();
+  State<RegisterWidget> createState() => _RegisterWidgetState();
 }
 
-class _LoginWidgetState extends State<LoginWidget> {
-  //final TextEditingController _controllerEmail = TextEditingController();
-
+class _RegisterWidgetState extends State<RegisterWidget> {
   @override
   Widget build(BuildContext context) {
-    double baseWidth = 300;
+     double baseWidth = 300;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
     return Scaffold(
@@ -126,7 +122,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                             top: 186.1904907227 * fem,
                             child: Align(
                               child: Text(
-                                'LOGIN',
+                                'Register',
                                 style: TextStyle(
                                   fontSize: 20 * ffem,
                                   fontWeight: FontWeight.w700,
@@ -148,30 +144,32 @@ class _LoginWidgetState extends State<LoginWidget> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          
                           const TextField(
                             enableSuggestions: true,
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(hintText: 'Email'),
+                            keyboardType: TextInputType.name,
+                            decoration: InputDecoration(
+                              hintText: 'Name'
+                            ),
                           ),
-                          const SizedBox(height: 10,),
+                          const SizedBox(
+                            height: 15,
+                          ),
                           const TextField(
+                          enableSuggestions: true,
+                          
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                            hintText: 'Email'
+                          ),
+                                                    ),
+                         const SizedBox(height: 15,),
+                                                 
+                           const TextField(
                             enableSuggestions: true,
                             keyboardType: TextInputType.visiblePassword,
-                            decoration: InputDecoration(hintText: 'Password'),
-                          ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                'Forgot Password?',
-                                style: TextStyle(
-                                  fontSize: 12 * ffem,
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.2125 * ffem / fem,
-                                  color: const Color(0xff000000),
-                                ),
-                              ),
+                            decoration: InputDecoration(
+                              hintText: 'Password'
                             ),
                           ),
                           Container(
@@ -180,65 +178,31 @@ class _LoginWidgetState extends State<LoginWidget> {
                             child: ElevatedButton(
                                 onPressed: () {},
                                 child: const Text(
-                                  'Login',
+                                  'Register',
                                   style: TextStyle(color: Colors.amber),
                                 )),
                           ),
-                          const Center(
-                              child: Text(
-                            'OR',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
-                          )),
-                          const Center(
-                            child: Text(
-                              'Sign In with',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              GestureDetector(
-                                child: FaIcon(
-                                  FontAwesomeIcons.facebook,
-                                  size: 35,
-                                  color: HexColor("#3E529C"),
-                                ),
-                                onTap: () {},
-                              ),
-                              GestureDetector(
-                                child: FaIcon(
-                                  FontAwesomeIcons.google,
-                                  size: 35,
-                                  color: HexColor("#3E529C"),
-                                ),
-                                onTap: () {},
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 15),
+
                           RichText(
                             text: TextSpan(
-                                text: 'Don\'t have an account?',
+                                text: 'Already have an account?',
                                 style: const TextStyle(
                                     color: Colors.black, fontSize: 16),
                                 children: <TextSpan>[
                                   TextSpan(
-                                      text: ' Sign up',
+                                      text: ' Login',
                                       style: const TextStyle(
                                           color: Colors.blueAccent,
                                           fontSize: 18),
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
                                           AppRouter.changeRoute<AuthModule>(
-                                              AppRoutes.register);
+                                              AppRoutes.login);
                                         })
                                 ]),
                           ),
+                        
+                          
                         ],
                       ),
                     ),
