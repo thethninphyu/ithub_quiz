@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:ithub_quiz/ui/admin_screen/module/question_create/validation/answer_row_widget.dart';
-import 'package:ithub_quiz/ui/admin_screen/module/question_create/validation/common.dart';
+import 'package:ithub_quiz/ui/admin_screen/module/question_create/validation/validation.dart';
 
 class QuestionScreen extends StatefulWidget {
   const QuestionScreen({Key? key}) : super(key: key);
@@ -37,7 +37,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 ),
                 TextFormField(
                   controller: question,
-                  validator: FormValidator.validation,
+                  validator: FormValidator.validateName,
                   keyboardType: TextInputType.multiline,
                   maxLines: 3,
                   decoration: InputDecoration(

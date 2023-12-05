@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ithub_quiz/ui/admin_screen/module/question_create/validation/common.dart';
+import 'package:ithub_quiz/ui/admin_screen/module/question_create/validation/validation.dart';
 
 class AnswerRow extends StatefulWidget {
   final int index;
@@ -36,7 +36,7 @@ class _AnswerRowState extends State<AnswerRow> {
         Expanded(
           flex: 3,
           child: TextFormField(
-            validator: FormValidator.validation,
+            validator: FormValidator.validateName,
             maxLines: 3,
             minLines: 1,
             decoration: const InputDecoration(

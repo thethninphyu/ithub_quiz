@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ithub_quiz/constants/colors.dart';
-import 'package:ithub_quiz/ui/admin_screen/module/question_create/validation/common.dart';
+import 'package:ithub_quiz/ui/admin_screen/module/question_create/validation/validation.dart';
 import 'package:ithub_quiz/ui/app_routes.dart';
 import 'package:ithub_quiz/ui/auth/auth_firebase.dart';
 import 'package:ithub_quiz/ui/auth/module/auth_module.dart';
@@ -156,7 +156,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                             TextFormField(
                               controller: nameController,
                               enableSuggestions: true,
-                              validator: FormValidator.validation,
+                              validator: FormValidator.validateName,
                               keyboardType: TextInputType.name,
                               decoration:
                                   const InputDecoration(hintText: 'Name'),
@@ -165,6 +165,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                               height: 15,
                             ),
                             TextFormField(
+                              validator: FormValidator.validateEmail,
                               controller: emailController,
                               enableSuggestions: true,
                               keyboardType: TextInputType.emailAddress,
@@ -189,8 +190,11 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   onPressed: () {
                                     if (_formKey.currentState!.validate()) {
                                       Auth().createUserWithEmailAndPassword(
-                                          email: emailController.text.toString(),
-                                          password: passwordController.text.toString());
+                                          email:
+                                              emailController.text.toString(),
+                                          password: passwordController.text
+                                              .toString(),
+                                          name: nameController.text.toString());
                                     }
                                   },
                                   child: const Text(
