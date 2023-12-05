@@ -1,7 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ithub_quiz/constants/colors.dart';
+import 'package:ithub_quiz/ui/admin_screen/module/question_create/validation/common.dart';
 import 'package:ithub_quiz/ui/app_routes.dart';
+import 'package:ithub_quiz/ui/auth/auth_firebase.dart';
 import 'package:ithub_quiz/ui/auth/module/auth_module.dart';
 import 'package:ithub_quiz/utils/app_router.dart';
 
@@ -13,9 +15,14 @@ class RegisterWidget extends StatefulWidget {
 }
 
 class _RegisterWidgetState extends State<RegisterWidget> {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-     double baseWidth = 300;
+    double baseWidth = 300;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
     return Scaffold(
@@ -136,74 +143,81 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                       ),
                     ),
                   ),
-                  Positioned(
-                    left: 64 * fem,
-                    top: 250.4166564941 * fem,
-                    child: SizedBox(
-                      width: 193 * fem,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          
-                          const TextField(
-                            enableSuggestions: true,
-                            keyboardType: TextInputType.name,
-                            decoration: InputDecoration(
-                              hintText: 'Name'
+                  Form(
+                    key: _formKey,
+                    child: Positioned(
+                      left: 64 * fem,
+                      top: 250.4166564941 * fem,
+                      child: SizedBox(
+                        width: 193 * fem,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextFormField(
+                              controller: nameController,
+                              enableSuggestions: true,
+                              validator: FormValidator.validation,
+                              keyboardType: TextInputType.name,
+                              decoration:
+                                  const InputDecoration(hintText: 'Name'),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          const TextField(
-                          enableSuggestions: true,
-                          
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
-                            hintText: 'Email'
-                          ),
-                                                    ),
-                         const SizedBox(height: 15,),
-                                                 
-                           const TextField(
-                            enableSuggestions: true,
-                            keyboardType: TextInputType.visiblePassword,
-                            decoration: InputDecoration(
-                              hintText: 'Password'
+                            const SizedBox(
+                              height: 15,
                             ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(vertical: 25.0),
-                            width: double.infinity,
-                            child: ElevatedButton(
-                                onPressed: () {},
-                                child: const Text(
-                                  'Register',
-                                  style: TextStyle(color: Colors.amber),
-                                )),
-                          ),
-
-                          RichText(
-                            text: TextSpan(
-                                text: 'Already have an account?',
-                                style: const TextStyle(
-                                    color: Colors.black, fontSize: 16),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                      text: ' Login',
-                                      style: const TextStyle(
-                                          color: Colors.blueAccent,
-                                          fontSize: 18),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          AppRouter.changeRoute<AuthModule>(
-                                              AppRoutes.login);
-                                        })
-                                ]),
-                          ),
-                        
-                          
-                        ],
+                            TextFormField(
+                              controller: emailController,
+                              enableSuggestions: true,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration:
+                                  const InputDecoration(hintText: 'Email'),
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            TextFormField(
+                              controller: passwordController,
+                              enableSuggestions: true,
+                              keyboardType: TextInputType.visiblePassword,
+                              decoration:
+                                  const InputDecoration(hintText: 'Password'),
+                            ),
+                            Container(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 25.0),
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      Auth().createUserWithEmailAndPassword(
+                                          email: emailController.text.toString(),
+                                          password: passwordController.text.toString());
+                                    }
+                                  },
+                                  child: const Text(
+                                    'Register',
+                                    style: TextStyle(color: Colors.amber),
+                                  )),
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                  text: 'Already have an account?',
+                                  style: const TextStyle(
+                                      color: Colors.black, fontSize: 16),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: ' Login',
+                                        style: const TextStyle(
+                                            color: Colors.blueAccent,
+                                            fontSize: 18),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () {
+                                            AppRouter.changeRoute<AuthModule>(
+                                                AppRoutes.login);
+                                          })
+                                  ]),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
