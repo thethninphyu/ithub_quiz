@@ -166,6 +166,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                               height: 10,
                             ),
                             TextFormField(
+                              controller: _passwordController,
                               validator: FormValidator.validatePassword,
                               enableSuggestions: true,
                               keyboardType: TextInputType.visiblePassword,
@@ -197,18 +198,19 @@ class _LoginWidgetState extends State<LoginWidget> {
                                       Auth()
                                           .signInWithEmailAndPassword(
                                               email: _emailController.text
-                                                  .toString(),
+                                                 ,
                                               password: _passwordController.text
-                                                  .toString())
+                                                )
                                           .then((_) => AppRouter.changeRoute<
                                                   AdminModule>(AppRoutes.root,
                                               context: context));
+
+                                  
                                     }
                                   },
                                   child: const Text(
                                     'Login',
-                                    style: TextStyle(
-                                        color: Colors.black),
+                                    style: TextStyle(color: Colors.black),
                                   )),
                             ),
                             const Center(
