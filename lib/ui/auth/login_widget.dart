@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ithub_quiz/constants/colors.dart';
+import 'package:ithub_quiz/ui/admin_screen/module/admin_module.dart';
+import 'package:ithub_quiz/ui/admin_screen/module/question_create/validation/validation.dart';
 import 'package:ithub_quiz/ui/app_routes.dart';
+import 'package:ithub_quiz/ui/auth/auth_firebase.dart';
 import 'package:ithub_quiz/ui/auth/module/auth_module.dart';
 import 'package:ithub_quiz/utils/app_router.dart';
 
@@ -15,7 +18,9 @@ class LoginWidget extends StatefulWidget {
 }
 
 class _LoginWidgetState extends State<LoginWidget> {
-  //final TextEditingController _controllerEmail = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -140,106 +145,130 @@ class _LoginWidgetState extends State<LoginWidget> {
                       ),
                     ),
                   ),
-                  Positioned(
-                    left: 64 * fem,
-                    top: 250.4166564941 * fem,
-                    child: SizedBox(
-                      width: 193 * fem,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const TextField(
-                            enableSuggestions: true,
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(hintText: 'Email'),
-                          ),
-                          const SizedBox(height: 10,),
-                          const TextField(
-                            enableSuggestions: true,
-                            keyboardType: TextInputType.visiblePassword,
-                            decoration: InputDecoration(hintText: 'Password'),
-                          ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                'Forgot Password?',
-                                style: TextStyle(
-                                  fontSize: 12 * ffem,
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.2125 * ffem / fem,
-                                  color: const Color(0xff000000),
-                                ),
-                              ),
+                  Form(
+                    key: _formKey,
+                    child: Positioned(
+                      left: 64 * fem,
+                      top: 250.4166564941 * fem,
+                      child: SizedBox(
+                        width: 193 * fem,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextFormField(
+                              controller: _emailController,
+                              enableSuggestions: true,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration:
+                                  const InputDecoration(hintText: 'Email'),
                             ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(vertical: 25.0),
-                            width: double.infinity,
-                            child: ElevatedButton(
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            TextFormField(
+                              validator: FormValidator.validatePassword,
+                              enableSuggestions: true,
+                              keyboardType: TextInputType.visiblePassword,
+                              decoration:
+                                  const InputDecoration(hintText: 'Password'),
+                            ),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: TextButton(
                                 onPressed: () {},
-                                child: const Text(
-                                  'Login',
-                                  style: TextStyle(color: Colors.amber),
-                                )),
-                          ),
-                          const Center(
-                              child: Text(
-                            'OR',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
-                          )),
-                          const Center(
-                            child: Text(
-                              'Sign In with',
-                              style: TextStyle(fontSize: 16),
+                                child: Text(
+                                  'Forgot Password?',
+                                  style: TextStyle(
+                                    fontSize: 12 * ffem,
+                                    fontWeight: FontWeight.w400,
+                                    height: 1.2125 * ffem / fem,
+                                    color: const Color(0xff000000),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              GestureDetector(
-                                child: FaIcon(
-                                  FontAwesomeIcons.facebook,
-                                  size: 35,
-                                  color: HexColor("#3E529C"),
-                                ),
-                                onTap: () {},
+                            Container(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 25.0),
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      Auth()
+                                          .signInWithEmailAndPassword(
+                                              email: _emailController.text
+                                                  .toString(),
+                                              password: _passwordController.text
+                                                  .toString())
+                                          .then((_) => AppRouter.changeRoute<
+                                                  AdminModule>(AppRoutes.root,
+                                              context: context));
+                                    }
+                                  },
+                                  child: const Text(
+                                    'Login',
+                                    style: TextStyle(
+                                        color: Colors.black),
+                                  )),
+                            ),
+                            const Center(
+                                child: Text(
+                              'OR',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            )),
+                            const Center(
+                              child: Text(
+                                'Sign In with',
+                                style: TextStyle(fontSize: 16),
                               ),
-                              GestureDetector(
-                                child: FaIcon(
-                                  FontAwesomeIcons.google,
-                                  size: 35,
-                                  color: HexColor("#3E529C"),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                GestureDetector(
+                                  child: FaIcon(
+                                    FontAwesomeIcons.facebook,
+                                    size: 35,
+                                    color: HexColor("#3E529C"),
+                                  ),
+                                  onTap: () {},
                                 ),
-                                onTap: () {},
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 15),
-                          RichText(
-                            text: TextSpan(
-                                text: 'Don\'t have an account?',
-                                style: const TextStyle(
-                                    color: Colors.black, fontSize: 16),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                      text: ' Sign up',
-                                      style: const TextStyle(
-                                          color: Colors.blueAccent,
-                                          fontSize: 18),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          AppRouter.changeRoute<AuthModule>(
-                                              AppRoutes.register);
-                                        })
-                                ]),
-                          ),
-                        ],
+                                GestureDetector(
+                                  child: FaIcon(
+                                    FontAwesomeIcons.google,
+                                    size: 35,
+                                    color: HexColor("#3E529C"),
+                                  ),
+                                  onTap: () {},
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 15),
+                            RichText(
+                              text: TextSpan(
+                                  text: 'Don\'t have an account?',
+                                  style: const TextStyle(
+                                      color: Colors.black, fontSize: 16),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: ' Sign up',
+                                        style: const TextStyle(
+                                            color: Colors.blueAccent,
+                                            fontSize: 18),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () {
+                                            AppRouter.changeRoute<AuthModule>(
+                                                AppRoutes.register,
+                                                context: context);
+                                          })
+                                  ]),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

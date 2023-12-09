@@ -17,6 +17,5 @@ class AuthModule extends Module {
             child: ((context, args) => const LoginWidget())),
         ChildRoute(AppRoutes.register,
             child: ((context, args) => const RegisterWidget())),
-        // ModuleRoute(AppRoutes.login, module: AuthModule()),
       ];
 }

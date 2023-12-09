@@ -30,6 +30,7 @@ class AppRouter {
     Object? args,
     bool? isReplace,
     bool? isReplaceAll,
+     required BuildContext context,
   }) {
     String tempRoute = "";
 
@@ -41,10 +42,10 @@ class AppRouter {
         tempRoute = AppRoutes.root;
         break;
       case AdminModule:
-        tempRoute = AppRoutes.root;
+        tempRoute = AppRoutes.admin;
         break;
       case CreateQuestionModule:
-        tempRoute = AppRoutes.root + AdminRoutes.create;
+        tempRoute =AppRoutes.admin + AdminRoutes.create;
     }
 
     _goToNextPage(

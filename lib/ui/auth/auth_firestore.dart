@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class AuthStore {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+
+//to add user to firestore
   Future<void> addUserToFirestore(
       {required String userId,
       required String name,
@@ -18,4 +20,8 @@ class AuthStore {
       rethrow;
     }
   }
+
+
+
+
 }

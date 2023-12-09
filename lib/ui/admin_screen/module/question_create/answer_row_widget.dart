@@ -5,14 +5,19 @@ class AnswerRow extends StatefulWidget {
   final int index;
   final ValueChanged<int> onDelete;
 
-  const AnswerRow({Key? key, required this.index, required this.onDelete})
-      : super(key: key);
+  const AnswerRow({
+    Key? key,
+    required this.index,
+    required this.onDelete,
+  }) : super(key: key);
 
   @override
   State<AnswerRow> createState() => _AnswerRowState();
 }
 
 class _AnswerRowState extends State<AnswerRow> {
+  TextEditingController answerController = TextEditingController();
+
   bool isChecked = false;
 
   @override
@@ -36,6 +41,7 @@ class _AnswerRowState extends State<AnswerRow> {
         Expanded(
           flex: 3,
           child: TextFormField(
+            controller: answerController,
             validator: FormValidator.validateName,
             maxLines: 3,
             minLines: 1,

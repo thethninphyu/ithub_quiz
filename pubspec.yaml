@@ -45,6 +45,7 @@ dependencies:
   font_awesome_flutter: ^10.0.0
   hexcolor: ^3.0.1
   cloud_firestore: ^4.13.3
+  firebase_core_platform_interface: ^5.0.0
  
   
 

@@ -1,5 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:ithub_quiz/ui/admin_screen/module/question_create/question_screen.dart';
+import 'package:ithub_quiz/ui/admin_screen/module/question_create/quiz_form_screen.dart';
 import 'package:ithub_quiz/ui/admin_screen/module/question_create/create_question_route.dart';
 import 'package:ithub_quiz/ui/admin_screen/module/question_create/question_create_screen.dart';
 

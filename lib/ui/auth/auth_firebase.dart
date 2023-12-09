@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ithub_quiz/constants/strings.dart';
 import 'package:ithub_quiz/ui/auth/auth_firestore.dart';
 
 class Auth {
+
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   User? get currenUser => _firebaseAuth.currentUser;
@@ -10,8 +12,15 @@ class Auth {
 
   Future<void> signInWithEmailAndPassword(
       {required String email, required String password}) async {
-    await _firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password);
+    try {
+      await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+
+       AppStrings.logger.e("Login Success email is $email}");
+    } catch (error) {
+       AppStrings.logger.e("Authentication Error: ; $error");
+      rethrow;
+    }
   }
 
   Future<void> createUserWithEmailAndPassword(
@@ -22,16 +31,14 @@ class Auth {
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
 
-      User? user = _firebaseAuth.currentUser;
-      print("Current user $user");
+      //User? user = _firebaseAuth.currentUser;
 
-      if (user != null) {
-        AuthStore()
-            .addUserToFirestore(userId: user.uid, name: name, email: email);
+      if (currenUser != null) {
+        AuthStore().addUserToFirestore(
+            userId: currenUser!.uid, name: name, email: email);
       }
     } catch (error) {
-      print('Error creating user: $error');
-      throw error;
+      rethrow;
     }
   }
 

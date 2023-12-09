@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ithub_quiz/constants/colors.dart';
+import 'package:ithub_quiz/ui/admin_screen/module/admin_module.dart';
 import 'package:ithub_quiz/ui/admin_screen/module/question_create/validation/validation.dart';
 import 'package:ithub_quiz/ui/app_routes.dart';
 import 'package:ithub_quiz/ui/auth/auth_firebase.dart';
@@ -194,12 +195,12 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                               emailController.text.toString(),
                                           password: passwordController.text
                                               .toString(),
-                                          name: nameController.text.toString());
+                                          name: nameController.text.toString()).then((_) => AppRouter.changeRoute<AdminModule>(AppRoutes.root, context: context));
                                     }
                                   },
                                   child: const Text(
                                     'Register',
-                                    style: TextStyle(color: Colors.amber),
+                                    style: TextStyle(color: AppColors.primaryColor),
                                   )),
                             ),
                             RichText(
@@ -216,7 +217,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
                                             AppRouter.changeRoute<AuthModule>(
-                                                AppRoutes.login);
+                                                AppRoutes.login, context: context);
                                           })
                                   ]),
                             ),
