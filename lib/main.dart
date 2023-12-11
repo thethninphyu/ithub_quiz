@@ -4,10 +4,17 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:ithub_quiz/app_widget.dart';
 import 'package:ithub_quiz/ui/app_module.dart';
+import 'package:ithub_quiz/utils/app_logger.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  try {
+    await Firebase.initializeApp();
+    // AppStrings.logger.e("Firebase initialize Success");
+  } catch (error) {
+    logger.e("Firebase initialize Failed");
+  }
   runApp(ModularApp(module: AppModule(), child: const IthubQuiz()));
   configLoading();
 }

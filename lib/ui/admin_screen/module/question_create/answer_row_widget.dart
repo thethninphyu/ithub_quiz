@@ -4,11 +4,15 @@ import 'package:ithub_quiz/ui/admin_screen/module/question_create/validation/val
 class AnswerRow extends StatefulWidget {
   final int index;
   final ValueChanged<int> onDelete;
+  final Function(bool) isChecked;
+  final void Function(TextEditingController) onControllerChanged;
 
   const AnswerRow({
     Key? key,
     required this.index,
     required this.onDelete,
+    required this.isChecked,
+    required this.onControllerChanged,
   }) : super(key: key);
 
   @override
@@ -16,9 +20,8 @@ class AnswerRow extends StatefulWidget {
 }
 
 class _AnswerRowState extends State<AnswerRow> {
-  TextEditingController answerController = TextEditingController();
-
   bool isChecked = false;
+  TextEditingController localAnswerController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +36,7 @@ class _AnswerRowState extends State<AnswerRow> {
               onChanged: (value) {
                 setState(() {
                   isChecked = value!;
+                  widget.isChecked(isChecked);
                 });
               },
             ),
@@ -41,13 +45,16 @@ class _AnswerRowState extends State<AnswerRow> {
         Expanded(
           flex: 3,
           child: TextFormField(
-            controller: answerController,
+            controller: localAnswerController,
             validator: FormValidator.validateName,
             maxLines: 3,
             minLines: 1,
             decoration: const InputDecoration(
               hintText: 'Ans',
             ),
+            onChanged: (text) {
+              widget.onControllerChanged(localAnswerController);
+            },
           ),
         ),
         Flexible(
@@ -60,5 +67,11 @@ class _AnswerRowState extends State<AnswerRow> {
         ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    localAnswerController.dispose();
+    super.dispose();
   }
 }

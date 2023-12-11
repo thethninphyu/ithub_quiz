@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ithub_quiz/ui/admin_screen/model/answer.dart';
 import 'package:ithub_quiz/ui/admin_screen/model/language_type.dart';
 import 'package:ithub_quiz/ui/admin_screen/module/question_create/answer_row_widget.dart';
 import 'package:ithub_quiz/ui/admin_screen/module/question_create/validation/validation.dart';
+import 'package:ithub_quiz/utils/app_logger.dart';
 
 class QuestionScreen extends StatefulWidget {
   const QuestionScreen({Key? key}) : super(key: key);
@@ -17,7 +19,48 @@ class _QuestionScreenState extends State<QuestionScreen> {
   final _formKey = GlobalKey<FormState>();
 
   List<AnswerRow> answerRows = [];
-  List<Map<String, dynamic>> answerDataList = [];
+  List<Answer> answerDataList = [];
+  TextEditingController answerController = TextEditingController();
+
+  bool isChecked = false;
+
+  checkFun(bool check) {
+    isChecked = check;
+  }
+
+  void _removeAnswerRow(int index) {
+    setState(() {
+      answerRows.removeAt(index);
+    });
+  }
+
+  void _addAnswerRow() {
+    setState(() {
+      int newIndex = answerRows.length;
+      AnswerRow newAnswerRow = AnswerRow(
+        index: newIndex,
+        onDelete: _removeAnswerRow,
+        isChecked: (value) {
+          checkFun(value);
+          logger.e('isChecked :$value');
+        },
+        onControllerChanged: (controller) {
+          _updateAnswerDataList(newIndex, controller.text);
+        },
+      );
+
+      answerDataList.add(Answer(isChecked, answerController.text.toString()));
+      answerRows.add(newAnswerRow);
+    });
+  }
+
+  void _updateAnswerDataList(int index, String newText) {
+    setState(() {
+      if (index < answerDataList.length) {
+        answerDataList[index] = Answer(isChecked, newText);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,13 +110,10 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     shrinkWrap: true,
                     itemCount: answerRows.length,
                     itemBuilder: (context, index) {
-                      return AnswerRow(
-                        index: index,
-                        onDelete: _removeAnswerRow,
-                     
-                      );
+                      return answerRows[index];
                     },
                   ),
+
                   const SizedBox(
                     height: 16,
                   ),
@@ -103,8 +143,13 @@ class _QuestionScreenState extends State<QuestionScreen> {
                             // Build the question document
                             Map<String, dynamic> questionData = {
                               'question': question.text,
-                              'answers': answerDataList,
+                              'answers': answerDataList
+                                  .map((answer) => answer.toJson())
+                                  .toList(),
                             };
+
+                            // logger.e(
+                            //     "Answer Data List ${answerDataList.map((answer) => answer.toJson()).toList()}");
 
                             FirebaseFirestore.instance
                                 .collection('languages')
@@ -119,8 +164,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
                                 .then((_) => EasyLoading.dismiss())
                                 .catchError((error) => {
                                       EasyLoading.dismiss(),
-                                      // AppStrings.logger.e(
-                                      //     "Error uploading to firestore : $error"),
                                     });
                           }
                         },
@@ -135,28 +178,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
         ),
       );
     } else {
-     // AppStrings.logger.e('Invalid arguments type');
-
       return const Scaffold();
     }
   }
-
-  void _removeAnswerRow(int index) {
-    setState(() {
-      answerRows.removeAt(index);
-    });
-  }
-
- void _addAnswerRow() {
-  setState(() {
-    int newIndex = answerRows.length;
-    AnswerRow newAnswerRow = AnswerRow(
-      index: newIndex,
-      onDelete: _removeAnswerRow,
-     
-    );
-    answerRows.add(newAnswerRow);
-  });
-}
-
 }
