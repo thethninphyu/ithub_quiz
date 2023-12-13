@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ithub_quiz/ui/auth/auth_firestore.dart';
 
@@ -34,6 +35,28 @@ class Auth {
       rethrow;
     }
   }
+
+  Future<String> getUserName() async {
+  try {
+    final CollectionReference users =
+        FirebaseFirestore.instance.collection('users');
+
+    final String uid = _firebaseAuth.currentUser!.uid;
+
+    final result = await users.doc(uid).get();
+
+    final Map<String, dynamic>? data = result.data() as Map<String, dynamic>?;
+
+    if (data != null && data.containsKey('name')) {
+      return data['name'].toString();
+    } else {
+      throw Exception("Display name not found in Firestore data");
+    }
+  } catch (error) {
+    rethrow;
+  }
+}
+
 
   Future<void> signOut() async {
     await _firebaseAuth.signOut();

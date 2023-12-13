@@ -18,7 +18,7 @@ class _AdminMenuScreenState extends State<QuestionCreateScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(title: const Text('Create Question Screen')),
+      appBar: AppBar(title: const Text('Create Question Screen',),automaticallyImplyLeading: false,),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('languages').snapshots(),
         builder: (context, snapshot) {

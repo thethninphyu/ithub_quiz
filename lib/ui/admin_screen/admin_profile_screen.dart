@@ -1,5 +1,8 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ithub_quiz/ui/auth/auth_firebase.dart';
+
 
 class AdminProfileScreen extends StatefulWidget {
   const AdminProfileScreen({super.key});
@@ -9,8 +12,11 @@ class AdminProfileScreen extends StatefulWidget {
 }
 
 class _AdminProfileScreenState extends State<AdminProfileScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
+  
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -20,6 +26,7 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
             'Profile Screen',
             style: TextStyle(color: Colors.amber),
           ),
+          automaticallyImplyLeading: false,
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -69,50 +76,56 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                        DynamicPersonalwidget('Name', Icons.person),
-                        const SizedBox(
-                          height: 10,
+                        FutureBuilder<String>(
+                          future: Auth().getUserName(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else {
+                              return DynamicPersonalwidget(
+                                  'Name', Icons.person, snapshot.data!);
+                            }
+                          },
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        DynamicPersonalwidget('Email', Icons.email),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        DynamicPersonalwidget(
+                            'Email', Icons.email, _auth.currentUser!.email!),
                         const SizedBox(
                           height: 10,
                         ),
                         SizedBox(
-                          width: width,
-                          child: ElevatedButton(
+                            width: width,
+                            child: ElevatedButton(
                               onPressed: () {
-                                Column(
-                                  children: [
-                                    AnimatedButton(
-                                      text: 'Info Dialog for Log out',
-                                      pressEvent: () {
-                                        AwesomeDialog(
-                                          context: context,
-                                          dialogType: DialogType.info,
-                                          borderSide: const BorderSide(
-                                              color: Colors.green, width: 2),
-                                          width: 200,
-                                          buttonsBorderRadius: const BorderRadius.all(
-                                              Radius.circular(2)),
-                                          dismissOnTouchOutside: true,
-                                          dismissOnBackKeyPress: false,
-                                          headerAnimationLoop: false,
-                                          title: 'Info',
-                                          desc: 'Are you sure you want to sign out?',
-                                          showCloseIcon: true,
-                                        ).show();
-                                      },
-                                    ),
-                                  ],
-                                );
-
-                                // Auth().signOut();
+                                AwesomeDialog(
+                                  context: context,
+                                  dialogType: DialogType.info,
+                                  width: width / 1.2 * 2,
+                                  buttonsBorderRadius: const BorderRadius.all(
+                                      Radius.circular(2)),
+                                  dismissOnTouchOutside: true,
+                                  dismissOnBackKeyPress: false,
+                                  headerAnimationLoop: false,
+                                  title: 'Confirmation',
+                                  desc: 'Are you sure you want to sign out?',
+                                  showCloseIcon: true,
+                                  btnCancelOnPress: () {},
+                                  btnOkOnPress: () {
+                                    Auth().signOut();
+                                  },
+                                ).show();
                               },
-                              child: const Text('Log out')),
-                        )
+                              child: const Text('Log out'),
+                            ))
                       ],
                     ),
                   ),
@@ -120,27 +133,32 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
               )
             ],
           ),
-        )
-
-        //  Center(
-
-        // )
-
-        );
+        ));
   }
 
   // ignore: non_constant_identifier_names
-  Column DynamicPersonalwidget(String text, IconData icon) {
+  Column DynamicPersonalwidget(String text, IconData icon, String value) {
     return Column(
       children: [
         Row(
-          children: [Icon(icon), Text(text)],
+          children: [
+            Icon(icon),
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: Text(
+                text,
+                style: const TextStyle(color: Colors.amber),
+              ),
+            )
+          ],
         ),
-        TextField(
-          decoration: InputDecoration(
-            label: Text(text),
+        Padding(
+          padding: const EdgeInsets.only(left: 20),
+          child: TextField(
+            controller: TextEditingController(text: value),
+            readOnly: true,
           ),
-        )
+        ),
       ],
     );
   }

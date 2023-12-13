@@ -11,7 +11,7 @@ class MultipleChoiceScreen extends StatefulWidget {
 }
 
 class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
-  int? _groupValues;
+  String? _groupValues;
 
   @override
   Widget build(BuildContext context) {
@@ -38,84 +38,160 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
               if (doc.data()!.containsKey('questionAndAnswer')) {
                 final questionAndAnswer = doc['questionAndAnswer'];
 
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      for (var index = 0; index < questionAndAnswer.length; index++)
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                return Column(
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
                           children: [
-                            ListTile(
-                              title: Row(
-                                children: [
-                                  const Text(
-                                    'Q. ',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    questionAndAnswer[index]['questionsAndAnswers']['question']
-                                        .toString(),
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            if (questionAndAnswer[index]['questionsAndAnswers']['answers'] != null)
+                            for (var index = 0;
+                                index < questionAndAnswer.length;
+                                index++)
                               Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  for (var answerIndex = 0;
-                                      answerIndex <
-                                          questionAndAnswer[index]['questionsAndAnswers']['answers'].length;
-                                      answerIndex++)
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10, bottom: 5),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            '${answerIndex + 1}. ',
+                                  ListTile(
+                                    title: Row(
+                                      children: [
+                                        const Text(
+                                          'Q. ',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Flexible(
+                                          child: Text(
+                                            questionAndAnswer[index]
+                                                        ['questionsAndAnswers']
+                                                    ['question']
+                                                .toString(),
                                             style: const TextStyle(
+                                              fontSize: 18,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          Expanded(
-                                            child: RadioListTile(
-                                              key: Key('$index$answerIndex'), 
-                                              title: Text(questionAndAnswer[index]['questionsAndAnswers']['answers'][answerIndex]['answer'].toString()),
-                                              activeColor: _groupValues == answerIndex
-                                                  ? Colors.green
-                                                  : Colors.grey,
-                                              value: answerIndex,
-                                              groupValue: _groupValues,
-                                              onChanged: (newValue) {
-                                                logger.e('Change value is $newValue');
-                                                setState(() {
-                                                  _groupValues = newValue;
-                                                });
-                                              },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  if (questionAndAnswer[index]
+                                          ['questionsAndAnswers']['answers'] !=
+                                      null)
+                                    Column(
+                                      children: [
+                                        for (var answerIndex = 0;
+                                            answerIndex <
+                                                questionAndAnswer[index][
+                                                            'questionsAndAnswers']
+                                                        ['answers']
+                                                    .length;
+                                            answerIndex++)
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 10, bottom: 5),
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  '${answerIndex + 1}. ',
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: RadioListTile(
+                                                    key: Key(
+                                                        '$index$answerIndex'),
+                                                    title: Text(
+                                                      questionAndAnswer[index][
+                                                                      'questionsAndAnswers']
+                                                                  ['answers'][
+                                                              answerIndex]['answer']
+                                                          .toString(),
+                                                    ),
+                                                    activeColor: Colors.green,
+                                                    value: '$index$answerIndex',
+                                                    groupValue: _groupValues,
+                                                    onChanged: (selectedValue) {
+                                                      // logger.e(
+                                                      //     'Group Value is  $selectedValue');
+
+                                                      setState(() {
+                                                        _groupValues =
+                                                            selectedValue;
+
+                                                        bool isChecked =
+                                                            questionAndAnswer[index]
+                                                                            [
+                                                                            'questionsAndAnswers']
+                                                                        [
+                                                                        'answers']
+                                                                    [
+                                                                    answerIndex]
+                                                                ['isChecked'];
+
+                                                        logger.e(
+                                                            'Correct Answers is $isChecked');
+                                                      });
+                                                    },
+                                                    tileColor: _groupValues != null &&
+                                                            questionAndAnswer[index]
+                                                                        ['questionsAndAnswers'][
+                                                                    'answers'] !=
+                                                                null &&
+                                                            answerIndex <
+                                                                questionAndAnswer[index]['questionsAndAnswers']['answers']
+                                                                    .length &&
+                                                            _groupValues ==
+                                                                '$index$answerIndex' &&
+                                                            questionAndAnswer[index]
+                                                                            ['questionsAndAnswers']
+                                                                        ['answers']
+                                                                    [answerIndex]
+                                                                ['isChecked']
+                                                        ? Colors.green
+                                                        : (_groupValues == '$index$answerIndex' &&
+                                                                questionAndAnswer[index]['questionsAndAnswers']['answers'][answerIndex]['isChecked'] !=
+                                                                    null &&
+                                                                !questionAndAnswer[index]
+                                                                            ['questionsAndAnswers']
+                                                                        ['answers'][answerIndex]
+                                                                    ['isChecked'])
+                                                            ? Colors.red[900]
+                                                            : null,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        ],
-                                      ),
+                                      ],
                                     ),
+                                  const Divider(
+                                      height: 1, color: Colors.black12),
                                 ],
                               ),
-                            const Divider(height: 1, color: Colors.black12),
                           ],
                         ),
-                    ],
-                  ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          child: const Text('Submit'),
+                          onPressed: () {},
+                        ),
+                      ),
+                    ),
+                  ],
                 );
               } else {
                 return Center(
                   child: Text(
                     'No Data for ${languages.langType}',
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.w400),
                   ),
                 );
               }
@@ -130,4 +206,3 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
     }
   }
 }
-
