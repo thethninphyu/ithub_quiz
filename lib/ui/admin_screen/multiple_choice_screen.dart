@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ithub_quiz/ui/admin_screen/model/language_type.dart';
-import 'package:ithub_quiz/utils/app_logger.dart';
 
 class MultipleChoiceScreen extends StatefulWidget {
   const MultipleChoiceScreen({Key? key}) : super(key: key);
@@ -108,8 +107,15 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                                   ['answers'][
                                                               answerIndex]['answer']
                                                           .toString(),
+                                                      style: TextStyle(
+                                                        color: _groupValues ==
+                                                                '$index$answerIndex'
+                                                            ? Colors
+                                                                .white 
+                                                            : Colors.black,
+                                                      ),
                                                     ),
-                                                    activeColor: Colors.green,
+                                                    activeColor: _groupValues == '$index$answerIndex' ? Colors.white : Colors.grey,
                                                     value: '$index$answerIndex',
                                                     groupValue: _groupValues,
                                                     onChanged: (selectedValue) {
@@ -120,18 +126,18 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                         _groupValues =
                                                             selectedValue;
 
-                                                        bool isChecked =
-                                                            questionAndAnswer[index]
-                                                                            [
-                                                                            'questionsAndAnswers']
-                                                                        [
-                                                                        'answers']
-                                                                    [
-                                                                    answerIndex]
-                                                                ['isChecked'];
+                                                        // bool isChecked =
+                                                        //     questionAndAnswer[index]
+                                                        //                     [
+                                                        //                     'questionsAndAnswers']
+                                                        //                 [
+                                                        //                 'answers']
+                                                        //             [
+                                                        //             answerIndex]
+                                                        //         ['isChecked'];
 
-                                                        logger.e(
-                                                            'Correct Answers is $isChecked');
+                                                        // logger.e(
+                                                        //     'Correct Answers is $isChecked');
                                                       });
                                                     },
                                                     tileColor: _groupValues != null &&
