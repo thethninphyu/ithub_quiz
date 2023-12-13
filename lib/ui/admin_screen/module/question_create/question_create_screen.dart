@@ -37,7 +37,7 @@ class _AdminMenuScreenState extends State<QuestionCreateScreen> {
                     itemBuilder: (context, index) {
                       final data = docs[index].data();
                       String documentId = docs[index].id;
-                    
+
                       return InkWell(
                         onTap: () {
                           AppRouter.changeRoute<CreateQuestionModule>(
@@ -45,8 +45,6 @@ class _AdminMenuScreenState extends State<QuestionCreateScreen> {
                               context: context,
                               args: Languages(
                                   id: documentId, langType: data['lang-type']));
-
-                      
                         },
                         child: Container(
                           margin: const EdgeInsets.symmetric(

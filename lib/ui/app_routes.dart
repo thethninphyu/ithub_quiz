@@ -5,4 +5,5 @@ class AppRoutes {
   static const String admin = "/admin";
   static const String register = "/register";
   static const String question = "/question";
+  static const String choice = "/choice";
 }

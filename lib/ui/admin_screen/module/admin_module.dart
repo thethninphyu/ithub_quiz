@@ -2,6 +2,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:ithub_quiz/ui/admin_screen/admin_page_screen.dart';
 import 'package:ithub_quiz/ui/admin_screen/module/admin_route.dart';
 import 'package:ithub_quiz/ui/admin_screen/admin_profile_screen.dart';
+import 'package:ithub_quiz/ui/admin_screen/module/choice-module.dart';
 import 'package:ithub_quiz/ui/admin_screen/module/question_create/create_question_module.dart';
 
 class AdminModule extends Module {
@@ -15,5 +16,7 @@ class AdminModule extends Module {
         ModuleRoute(AdminRoutes.create, module: CreateQuestionModule()),
         ChildRoute(AdminRoutes.profileScreen,
             child: ((context, args) => const AdminProfileScreen())),
+        ModuleRoute(AdminRoutes.multipleChoiceScreen,
+            module: ChoiceFormModule())
       ];
 }

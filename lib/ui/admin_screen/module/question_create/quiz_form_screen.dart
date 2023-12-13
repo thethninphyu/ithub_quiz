@@ -5,7 +5,6 @@ import 'package:ithub_quiz/ui/admin_screen/model/answer.dart';
 import 'package:ithub_quiz/ui/admin_screen/model/language_type.dart';
 import 'package:ithub_quiz/ui/admin_screen/module/question_create/answer_row_widget.dart';
 import 'package:ithub_quiz/ui/admin_screen/module/question_create/validation/validation.dart';
-import 'package:ithub_quiz/utils/app_logger.dart';
 
 class QuestionScreen extends StatefulWidget {
   const QuestionScreen({Key? key}) : super(key: key);
@@ -40,9 +39,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
       AnswerRow newAnswerRow = AnswerRow(
         index: newIndex,
         onDelete: _removeAnswerRow,
-        isChecked: (value) {
-          checkFun(value);
-          logger.e('isChecked :$value');
+        isChecked: (check) {
+          checkFun(check);
+         // logger.e('isChecked :$value');
         },
         onControllerChanged: (controller) {
           _updateAnswerDataList(newIndex, controller.text);

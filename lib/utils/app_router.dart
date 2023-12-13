@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:ithub_quiz/ui/admin_screen/module/admin_module.dart';
 import 'package:ithub_quiz/ui/admin_screen/module/admin_route.dart';
+import 'package:ithub_quiz/ui/admin_screen/module/choice-module.dart';
 import 'package:ithub_quiz/ui/admin_screen/module/question_create/create_question_module.dart';
 import 'package:ithub_quiz/ui/app_routes.dart';
 import 'package:ithub_quiz/ui/auth/module/auth_module.dart';
@@ -30,7 +31,7 @@ class AppRouter {
     Object? args,
     bool? isReplace,
     bool? isReplaceAll,
-     required BuildContext context,
+    required BuildContext context,
   }) {
     String tempRoute = "";
 
@@ -45,7 +46,11 @@ class AppRouter {
         tempRoute = AppRoutes.admin;
         break;
       case CreateQuestionModule:
-        tempRoute =AppRoutes.admin + AdminRoutes.create;
+        tempRoute = AppRoutes.admin + AdminRoutes.create;
+        break;
+      case ChoiceFormModule:
+        tempRoute = AppRoutes.admin + AdminRoutes.multipleChoiceScreen;
+        break;
     }
 
     _goToNextPage(
