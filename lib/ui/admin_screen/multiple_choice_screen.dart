@@ -10,7 +10,7 @@ class MultipleChoiceScreen extends StatefulWidget {
 }
 
 class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
-  String? _groupValues;
+  List<String?> _groupValues = [];
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,8 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return const Text(
-                  'Error occurred in retrieving data from Firestore');
+                'Error occurred in retrieving data from Firestore',
+              );
             } else if (snapshot.hasData && snapshot.data!.exists) {
               final doc =
                   snapshot.data as DocumentSnapshot<Map<String, dynamic>>;
@@ -108,49 +109,56 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                               answerIndex]['answer']
                                                           .toString(),
                                                       style: TextStyle(
-                                                        color: _groupValues ==
-                                                                '$index$answerIndex'
-                                                            ? Colors.white
+                                                        color: _groupValues.length > index &&
+                                                                _groupValues[index] ==
+                                                                    '$index$answerIndex'
+                                                            ? Colors.blue
                                                             : Colors.black,
                                                       ),
                                                     ),
-                                                    activeColor: _groupValues ==
-                                                            '$index$answerIndex'
-                                                        ? Colors.white
+                                                    activeColor: _groupValues.length > index &&
+                                                            _groupValues[index] ==
+                                                                '$index$answerIndex'
+                                                        ? Colors.blue
                                                         : Colors.grey,
                                                     value: '$index$answerIndex',
-                                                    groupValue: _groupValues,
+                                                    groupValue: _groupValues.length > index
+                                                        ? _groupValues[index]
+                                                        : null,
                                                     onChanged: (selectedValue) {
                                                       setState(() {
-                                                        _groupValues =
-                                                            selectedValue;
+                                                        if (_groupValues.length > index) {
+                                                          _groupValues[index] = selectedValue!;
+                                                        } else {
+                                                          _groupValues.add(selectedValue!);
+                                                        }
                                                       });
                                                     },
-                                                    tileColor: _groupValues != null &&
-                                                            questionAndAnswer[index]
-                                                                        ['questionsAndAnswers'][
-                                                                    'answers'] !=
-                                                                null &&
-                                                            answerIndex <
-                                                                questionAndAnswer[index]['questionsAndAnswers']['answers']
-                                                                    .length &&
-                                                            _groupValues ==
-                                                                '$index$answerIndex' &&
-                                                            questionAndAnswer[index]
-                                                                            ['questionsAndAnswers']
-                                                                        ['answers']
-                                                                    [answerIndex]
-                                                                ['isChecked']
-                                                        ? Colors.green
-                                                        : (_groupValues == '$index$answerIndex' &&
-                                                                questionAndAnswer[index]['questionsAndAnswers']['answers'][answerIndex]['isChecked'] !=
-                                                                    null &&
-                                                                !questionAndAnswer[index]
-                                                                            ['questionsAndAnswers']
-                                                                        ['answers'][answerIndex]
-                                                                    ['isChecked'])
-                                                            ? Colors.red
-                                                            : null,
+                                                    // tileColor: _groupValues.length > index &&
+                                                    //         questionAndAnswer[index]
+                                                    //                     ['questionsAndAnswers'][
+                                                    //                 'answers'] !=
+                                                    //             null &&
+                                                    //         answerIndex <
+                                                    //             questionAndAnswer[index]['questionsAndAnswers']['answers']
+                                                    //                 .length &&
+                                                    //         _groupValues[index] ==
+                                                    //             '$index$answerIndex' &&
+                                                    //         questionAndAnswer[index]
+                                                    //                         ['questionsAndAnswers']
+                                                    //                     ['answers']
+                                                    //                 [answerIndex]
+                                                    //             ['isChecked']
+                                                    //     ? Colors.green
+                                                    //     : (_groupValues.length > index &&
+                                                    //             _groupValues[index] ==
+                                                    //                 '$index$answerIndex' &&
+                                                    //             questionAndAnswer[index]['questionsAndAnswers']['answers'][answerIndex]['isChecked'] !=
+                                                    //                 null &&
+                                                    //             !_groupValues[index]!
+                                                    //                 .contains(answerIndex as Pattern))
+                                                    //         ? Colors.red
+                                                    //         : null,
                                                   ),
                                                 ),
                                               ],
