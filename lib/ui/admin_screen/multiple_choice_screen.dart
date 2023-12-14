@@ -110,34 +110,20 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                       style: TextStyle(
                                                         color: _groupValues ==
                                                                 '$index$answerIndex'
-                                                            ? Colors
-                                                                .white 
+                                                            ? Colors.white
                                                             : Colors.black,
                                                       ),
                                                     ),
-                                                    activeColor: _groupValues == '$index$answerIndex' ? Colors.white : Colors.grey,
+                                                    activeColor: _groupValues ==
+                                                            '$index$answerIndex'
+                                                        ? Colors.white
+                                                        : Colors.grey,
                                                     value: '$index$answerIndex',
                                                     groupValue: _groupValues,
                                                     onChanged: (selectedValue) {
-                                                      // logger.e(
-                                                      //     'Group Value is  $selectedValue');
-
                                                       setState(() {
                                                         _groupValues =
                                                             selectedValue;
-
-                                                        // bool isChecked =
-                                                        //     questionAndAnswer[index]
-                                                        //                     [
-                                                        //                     'questionsAndAnswers']
-                                                        //                 [
-                                                        //                 'answers']
-                                                        //             [
-                                                        //             answerIndex]
-                                                        //         ['isChecked'];
-
-                                                        // logger.e(
-                                                        //     'Correct Answers is $isChecked');
                                                       });
                                                     },
                                                     tileColor: _groupValues != null &&
@@ -163,7 +149,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                                             ['questionsAndAnswers']
                                                                         ['answers'][answerIndex]
                                                                     ['isChecked'])
-                                                            ? Colors.red[900]
+                                                            ? Colors.red
                                                             : null,
                                                   ),
                                                 ),

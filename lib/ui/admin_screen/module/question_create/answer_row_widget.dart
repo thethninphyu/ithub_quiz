@@ -26,46 +26,47 @@ class _AnswerRowState extends State<AnswerRow> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Expanded(
-          flex: 1,
-          child: SizedBox(
-            child: Checkbox(
-              value: isChecked,
-              onChanged: (value) {
-                setState(() {
-                  isChecked = value!;
-                  widget.isChecked(isChecked);
-                });
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 1,
+            child: SizedBox(
+              child: Checkbox(
+                value: isChecked,
+                onChanged: (value) {
+                  setState(() {
+                    isChecked = value!;
+                    widget.isChecked(isChecked);
+                  });
+                },
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: TextFormField(
+              controller: localAnswerController,
+              validator: FormValidator.validateName,
+              maxLines: 3,
+              minLines: 1,
+              decoration: const InputDecoration(
+                hintText: 'Ans',
+              ),
+              onChanged: (text) {
+                widget.onControllerChanged(localAnswerController);
               },
             ),
           ),
-        ),
-        Expanded(
-          flex: 3,
-          child: TextFormField(
-            controller: localAnswerController,
-            validator: FormValidator.validateName,
-            maxLines: 3,
-            minLines: 1,
-            decoration: const InputDecoration(
-              hintText: 'Ans',
+          Flexible(
+            child: IconButton(
+              icon: const Icon(Icons.remove_circle),
+              onPressed: () {
+                widget.onDelete(widget.index);
+              },
             ),
-            onChanged: (text) {
-              widget.onControllerChanged(localAnswerController);
-            },
           ),
-        ),
-        Flexible(
-          child: IconButton(
-            icon: const Icon(Icons.remove_circle),
-            onPressed: () {
-              widget.onDelete(widget.index);
-            },
-          ),
-        ),
-      ],
+        ],
+     
     );
   }
 

@@ -1,30 +1,42 @@
-// // This is a basic Flutter widget test.
-// //
-// // To perform an interaction with a widget in your test, use the WidgetTester
-// // utility in the flutter_test package. For example, you can send tap and scroll
-// // gestures. You can also use WidgetTester to find child widgets in the widget
-// // tree, read text, and verify that the values of widget properties are correct.
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:ithub_quiz/ui/admin_screen/module/question_create/answer_row_widget.dart';
 
-// import 'package:flutter/material.dart';
-// import 'package:flutter_test/flutter_test.dart';
+void main() {
+  testWidgets('Testing remove arrow object', (WidgetTester tester) async {
+    // Variable to hold the index passed to onDelete callback
+    int deletedIndex = -1;
+    bool isChecked = false;
 
-// import 'package:ithub_quiz/main.dart';
+    // Build the AnswerRow widget
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: AnswerRow(
+            index: 0,
+            onDelete: (int value) {
+              deletedIndex = value;
+            },
+            isChecked: (bool newChecked) {
+              isChecked = newChecked;
+            },
+            onControllerChanged: (TextEditingController) {},
+          ),
+        ),
+      ),
+    );
 
-// void main() {
-//   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-//     // Build our app and trigger a frame.
-//     //await tester.pumpWidget(const MyApp());
+    // Tap the remove button
+    await tester.tap(find.byIcon(Icons.remove_circle));
 
-//     // Verify that our counter starts at 0.
-//     expect(find.text('0'), findsOneWidget);
-//     expect(find.text('1'), findsNothing);
+    // Wait for the frame to be rebuilt
+    await tester.pump();
 
-//     // Tap the '+' icon and trigger a frame.
-//     await tester.tap(find.byIcon(Icons.add));
-//     await tester.pump();
+    // Verify that onDelete callback is called with the correct index
+    expect(deletedIndex, 0);
 
-//     // Verify that our counter has incremented.
-//     expect(find.text('0'), findsNothing);
-//     expect(find.text('1'), findsOneWidget);
-//   });
-// }
+     // Find the checkbox and check its state
+    Finder checkboxFinder = find.byType(Checkbox);
+    expect(tester.widget<Checkbox>(checkboxFinder).value, isChecked);
+  });
+}
