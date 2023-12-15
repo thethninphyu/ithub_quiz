@@ -147,9 +147,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                                     [
                                                                     answerIndex]
                                                                 ['isChecked'];
-                                                      
 
-                                                      
                                                         if (_groupValues
                                                                 .length >
                                                             index) {
