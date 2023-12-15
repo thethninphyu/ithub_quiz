@@ -38,12 +38,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       const BoxDecoration(color: AppColors.secondaryColor),
                   height: height * 0.25,
                   width: width,
-                  child: const Padding(
+                  child: Padding(
                     padding: EdgeInsets.only(top: 50, left: 15, right: 15),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Dashboard',
                             style: TextStyle(
                                 fontSize: 28,
@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 color: AppColors.primaryColor,
                                 letterSpacing: 1),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 16,
                           ),
                           Text('Last Update : 7 day Set 2023',
