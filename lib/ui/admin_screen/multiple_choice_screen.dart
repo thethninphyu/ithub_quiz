@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ithub_quiz/ui/admin_screen/model/language_type.dart';
+import 'package:ithub_quiz/utils/app_logger.dart';
 
 class MultipleChoiceScreen extends StatefulWidget {
   const MultipleChoiceScreen({Key? key}) : super(key: key);
@@ -11,6 +12,8 @@ class MultipleChoiceScreen extends StatefulWidget {
 
 class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
   List<String?> _groupValues = [];
+  List<int> _selectedAsnwer = [];
+  int count = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -109,56 +112,66 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                               answerIndex]['answer']
                                                           .toString(),
                                                       style: TextStyle(
-                                                        color: _groupValues.length > index &&
-                                                                _groupValues[index] ==
+                                                        color: _groupValues
+                                                                        .length >
+                                                                    index &&
+                                                                _groupValues[
+                                                                        index] ==
                                                                     '$index$answerIndex'
                                                             ? Colors.blue
                                                             : Colors.black,
                                                       ),
                                                     ),
-                                                    activeColor: _groupValues.length > index &&
-                                                            _groupValues[index] ==
+                                                    activeColor: _groupValues
+                                                                    .length >
+                                                                index &&
+                                                            _groupValues[
+                                                                    index] ==
                                                                 '$index$answerIndex'
                                                         ? Colors.blue
                                                         : Colors.grey,
                                                     value: '$index$answerIndex',
-                                                    groupValue: _groupValues.length > index
+                                                    groupValue: _groupValues
+                                                                .length >
+                                                            index
                                                         ? _groupValues[index]
                                                         : null,
                                                     onChanged: (selectedValue) {
                                                       setState(() {
-                                                        if (_groupValues.length > index) {
-                                                          _groupValues[index] = selectedValue!;
+                                                        bool isChecked =
+                                                            questionAndAnswer[index]
+                                                                            [
+                                                                            'questionsAndAnswers']
+                                                                        [
+                                                                        'answers']
+                                                                    [
+                                                                    answerIndex]
+                                                                ['isChecked'];
+                                                      
+
+                                                      
+                                                        if (_groupValues
+                                                                .length >
+                                                            index) {
+                                                          _groupValues[index] =
+                                                              selectedValue!;
                                                         } else {
-                                                          _groupValues.add(selectedValue!);
+                                                          _groupValues.add(
+                                                              selectedValue!);
+
+                                                          if (isChecked) {
+                                                            count = count + 1;
+                                                            _selectedAsnwer
+                                                                .add(count);
+                                                          } else {
+                                                            _selectedAsnwer
+                                                                .add(count);
+                                                          }
+                                                          logger.e(
+                                                              "Selected Answer list is $_selectedAsnwer");
                                                         }
                                                       });
                                                     },
-                                                    // tileColor: _groupValues.length > index &&
-                                                    //         questionAndAnswer[index]
-                                                    //                     ['questionsAndAnswers'][
-                                                    //                 'answers'] !=
-                                                    //             null &&
-                                                    //         answerIndex <
-                                                    //             questionAndAnswer[index]['questionsAndAnswers']['answers']
-                                                    //                 .length &&
-                                                    //         _groupValues[index] ==
-                                                    //             '$index$answerIndex' &&
-                                                    //         questionAndAnswer[index]
-                                                    //                         ['questionsAndAnswers']
-                                                    //                     ['answers']
-                                                    //                 [answerIndex]
-                                                    //             ['isChecked']
-                                                    //     ? Colors.green
-                                                    //     : (_groupValues.length > index &&
-                                                    //             _groupValues[index] ==
-                                                    //                 '$index$answerIndex' &&
-                                                    //             questionAndAnswer[index]['questionsAndAnswers']['answers'][answerIndex]['isChecked'] !=
-                                                    //                 null &&
-                                                    //             !_groupValues[index]!
-                                                    //                 .contains(answerIndex as Pattern))
-                                                    //         ? Colors.red
-                                                    //         : null,
                                                   ),
                                                 ),
                                               ],
@@ -180,7 +193,17 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButton(
                           child: const Text('Submit'),
-                          onPressed: () {},
+                          onPressed: () {
+                            int totalQuestions = questionAndAnswer.length;
+                            int selectedCount = count;
+                            double result =
+                                (selectedCount / totalQuestions) * 100;
+                            if (result > 40) {
+                              logger.e("Total result is $result");
+                            } else {
+                              logger.e("Total result is $result");
+                            }
+                          },
                         ),
                       ),
                     ),
