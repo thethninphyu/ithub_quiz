@@ -12,7 +12,7 @@ class MultipleChoiceScreen extends StatefulWidget {
 
 class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
   List<String?> _groupValues = [];
-  List<int> _selectedAsnwer = [];
+  List<int?> _selectedAsnwer = [];
   int count = 0;
 
   @override
@@ -147,26 +147,39 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                                     [
                                                                     answerIndex]
                                                                 ['isChecked'];
-                                                      
 
-                                                      
                                                         if (_groupValues
                                                                 .length >
                                                             index) {
                                                           _groupValues[index] =
                                                               selectedValue!;
+
+                                                         if(isChecked){
+                                                          _selectedAsnwer[answerIndex] =  _groupValues[
+                                                                index] as int? ;
+
+                                                            _selectedAsnwer[
+                                                                answerIndex] = 1;
+                                                          } else {
+                                                            _selectedAsnwer[
+                                                                answerIndex] = 0;
+                                                          }
+
+                                                          logger.e(
+                                                              'Updated index $_selectedAsnwer');
                                                         } else {
                                                           _groupValues.add(
                                                               selectedValue!);
 
                                                           if (isChecked) {
-                                                            count = count + 1;
                                                             _selectedAsnwer
-                                                                .add(count);
+                                                                .add(1);
                                                           } else {
+                                                            count = 0;
                                                             _selectedAsnwer
                                                                 .add(count);
                                                           }
+
                                                           logger.e(
                                                               "Selected Answer list is $_selectedAsnwer");
                                                         }
@@ -195,9 +208,13 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                           child: const Text('Submit'),
                           onPressed: () {
                             int totalQuestions = questionAndAnswer.length;
-                            int selectedCount = count;
+                            int countOfOnes = _selectedAsnwer
+                                .where((value) => value == 1)
+                                .length;
+
+                            logger.e('length of One $countOfOnes');
                             double result =
-                                (selectedCount / totalQuestions) * 100;
+                                (countOfOnes / totalQuestions) * 100;
                             if (result > 40) {
                               logger.e("Total result is $result");
                             } else {
