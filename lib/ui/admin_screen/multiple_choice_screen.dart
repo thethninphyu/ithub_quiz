@@ -155,9 +155,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                               selectedValue!;
 
                                                          if(isChecked){
-                                                          _selectedAsnwer[answerIndex] =  _groupValues[
-                                                                index] as int? ;
-
+                                                         
                                                             _selectedAsnwer[
                                                                 answerIndex] = 1;
                                                           } else {
