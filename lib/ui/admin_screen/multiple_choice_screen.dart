@@ -153,9 +153,11 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                             index) {
                                                           _groupValues[index] =
                                                               selectedValue!;
+                                                          _selectedAsnwer = [];
+                                                          logger.e(
+                                                              "What for$index$answerIndex");
 
-                                                         if(isChecked){
-                                                         
+                                                          if (isChecked) {
                                                             _selectedAsnwer[
                                                                 answerIndex] = 1;
                                                           } else {
@@ -164,7 +166,8 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                           }
 
                                                           logger.e(
-                                                              'Updated index $_selectedAsnwer');
+                                                              _selectedAsnwer[
+                                                                  answerIndex]);
                                                         } else {
                                                           _groupValues.add(
                                                               selectedValue!);
@@ -173,9 +176,9 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                             _selectedAsnwer
                                                                 .add(1);
                                                           } else {
-                                                            count = 0;
+                                                            //count = 0;
                                                             _selectedAsnwer
-                                                                .add(count);
+                                                                .add(0);
                                                           }
 
                                                           logger.e(

@@ -197,15 +197,15 @@ class _LoginWidgetState extends State<LoginWidget> {
                                     if (_formKey.currentState!.validate()) {
                                       Auth()
                                           .signInWithEmailAndPassword(
-                                              email: _emailController.text
-                                                 ,
-                                              password: _passwordController.text
-                                                )
-                                          .then((_) => AppRouter.changeRoute<
-                                                  AdminModule>(AppRoutes.root,
-                                              context: context));
-
-                                  
+                                              email: _emailController.text,
+                                              password:
+                                                  _passwordController.text)
+                                          .then((_) {
+                                        AppRouter.changeRoute<AdminModule>(
+                                            AppRoutes.root,
+                                            isReplaceAll: true,
+                                            context: context);
+                                      });
                                     }
                                   },
                                   child: const Text(
