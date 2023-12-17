@@ -13,7 +13,8 @@ class MultipleChoiceScreen extends StatefulWidget {
 class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
   List<String?> _groupValues = [];
   List<int?> _selectedAsnwer = [];
-  int count = 0;
+
+  late dynamic questionAndAnswer = [];
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                   snapshot.data as DocumentSnapshot<Map<String, dynamic>>;
 
               if (doc.data()!.containsKey('questionAndAnswer')) {
-                final questionAndAnswer = doc['questionAndAnswer'];
+                questionAndAnswer = doc['questionAndAnswer'];
 
                 return Column(
                   children: [
@@ -138,6 +139,8 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                         : null,
                                                     onChanged: (selectedValue) {
                                                       setState(() {
+                                                        logger.e(
+                                                            'Value change $selectedValue');
                                                         bool isChecked =
                                                             questionAndAnswer[index]
                                                                             [
@@ -154,13 +157,12 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                           _groupValues[index] =
                                                               selectedValue!;
 
-                                                         if(isChecked){
-                                                         
+                                                          if (isChecked) {
                                                             _selectedAsnwer[
-                                                                answerIndex] = 1;
+                                                                index] = 1;
                                                           } else {
                                                             _selectedAsnwer[
-                                                                answerIndex] = 0;
+                                                                index] = 0;
                                                           }
 
                                                           logger.e(
@@ -173,14 +175,14 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                             _selectedAsnwer
                                                                 .add(1);
                                                           } else {
-                                                            count = 0;
                                                             _selectedAsnwer
-                                                                .add(count);
+                                                                .add(0);
                                                           }
-
-                                                          logger.e(
-                                                              "Selected Answer list is $_selectedAsnwer");
                                                         }
+
+                                                        logger.e(
+                                                            "Selected Answer list is $_selectedAsnwer");
+                                                        // calculateResult();
                                                       });
                                                     },
                                                   ),
@@ -205,19 +207,8 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                         child: ElevatedButton(
                           child: const Text('Submit'),
                           onPressed: () {
-                            int totalQuestions = questionAndAnswer.length;
-                            int countOfOnes = _selectedAsnwer
-                                .where((value) => value == 1)
-                                .length;
-
-                            logger.e('length of One $countOfOnes');
-                            double result =
-                                (countOfOnes / totalQuestions) * 100;
-                            if (result > 40) {
-                              logger.e("Total result is $result");
-                            } else {
-                              logger.e("Total result is $result");
-                            }
+                            // Call the method to recalculate the result
+                            calculateResult();
                           },
                         ),
                       ),
@@ -241,6 +232,21 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
       );
     } else {
       return const Scaffold();
+    }
+  }
+
+  void calculateResult() {
+    int totalQuestions = questionAndAnswer.length;
+    int countOfOnes = _selectedAsnwer.where((value) => value == 1).length;
+
+    double result = (countOfOnes / totalQuestions) * 100;
+
+    if (result > 40) {
+      logger.e("Total result is $result");
+      // Do something when the result is greater than 40%
+    } else {
+      logger.e("Total result is $result");
+      // Do something when the result is 40% or less
     }
   }
 }
