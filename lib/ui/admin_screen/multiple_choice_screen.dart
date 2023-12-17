@@ -156,7 +156,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                             index) {
                                                           _groupValues[index] =
                                                               selectedValue!;
-
+                                                        
                                                           if (isChecked) {
                                                             _selectedAsnwer[
                                                                 index] = 1;
@@ -166,7 +166,8 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                           }
 
                                                           logger.e(
-                                                              'Updated index $_selectedAsnwer');
+                                                              _selectedAsnwer[
+                                                                  answerIndex]);
                                                         } else {
                                                           _groupValues.add(
                                                               selectedValue!);
@@ -243,10 +244,10 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
 
     if (result > 40) {
       logger.e("Total result is $result");
-      // Do something when the result is greater than 40%
+     
     } else {
       logger.e("Total result is $result");
-      // Do something when the result is 40% or less
+     
     }
   }
 }
