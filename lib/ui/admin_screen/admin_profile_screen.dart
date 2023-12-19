@@ -1,8 +1,8 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:ithub_quiz/ui/admin_screen/dialog_util.dart';
 import 'package:ithub_quiz/ui/auth/auth_firebase.dart';
-
 
 class AdminProfileScreen extends StatefulWidget {
   const AdminProfileScreen({super.key});
@@ -16,7 +16,6 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-  
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -106,23 +105,16 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
                             width: width,
                             child: ElevatedButton(
                               onPressed: () {
-                                AwesomeDialog(
-                                  context: context,
-                                  dialogType: DialogType.info,
-                                  width: width / 1.2 * 2,
-                                  buttonsBorderRadius: const BorderRadius.all(
-                                      Radius.circular(2)),
-                                  dismissOnTouchOutside: true,
-                                  dismissOnBackKeyPress: false,
-                                  headerAnimationLoop: false,
-                                  title: 'Confirmation',
-                                  desc: 'Are you sure you want to sign out?',
-                                  showCloseIcon: true,
-                                  btnCancelOnPress: () {},
-                                  btnOkOnPress: () {
-                                    Auth().signOut();
-                                  },
-                                ).show();
+                                DialogUtils.createConfirmationDialog(
+                                    context: context,
+                                    title: 'Confirmation',
+                                    width: width / 1.2 * 2,
+                                    dialogType: DialogType.info,
+                                    description:
+                                        'Are you sure you want to sign out?',
+                                    onOkPressed: () {
+                                      Auth().signOut();
+                                    }).show();
                               },
                               child: const Text('Log out'),
                             ))

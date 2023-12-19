@@ -1,7 +1,9 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:ithub_quiz/ui/admin_screen/dialog_util.dart';
 import 'package:ithub_quiz/ui/admin_screen/model/language_type.dart';
-import 'package:ithub_quiz/utils/app_logger.dart';
 
 class MultipleChoiceScreen extends StatefulWidget {
   const MultipleChoiceScreen({Key? key}) : super(key: key);
@@ -139,8 +141,8 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                         : null,
                                                     onChanged: (selectedValue) {
                                                       setState(() {
-                                                        logger.e(
-                                                            'Value change $selectedValue');
+                                                        // logger.e(
+                                                        //     'Value change $selectedValue');
                                                         bool isChecked =
                                                             questionAndAnswer[index]
                                                                             [
@@ -156,7 +158,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                             index) {
                                                           _groupValues[index] =
                                                               selectedValue!;
-                                                        
+
                                                           if (isChecked) {
                                                             _selectedAsnwer[
                                                                 index] = 1;
@@ -164,10 +166,6 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                             _selectedAsnwer[
                                                                 index] = 0;
                                                           }
-
-                                                          logger.e(
-                                                              _selectedAsnwer[
-                                                                  answerIndex]);
                                                         } else {
                                                           _groupValues.add(
                                                               selectedValue!);
@@ -181,9 +179,8 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                           }
                                                         }
 
-                                                        logger.e(
-                                                            "Selected Answer list is $_selectedAsnwer");
-                                                        // calculateResult();
+                                                        // logger.e(
+                                                        //     "Selected Answer list is $_selectedAsnwer");
                                                       });
                                                     },
                                                   ),
@@ -208,7 +205,6 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                         child: ElevatedButton(
                           child: const Text('Submit'),
                           onPressed: () {
-                            // Call the method to recalculate the result
                             calculateResult();
                           },
                         ),
@@ -240,14 +236,46 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
     int totalQuestions = questionAndAnswer.length;
     int countOfOnes = _selectedAsnwer.where((value) => value == 1).length;
 
-    double result = (countOfOnes / totalQuestions) * 100;
+    if (_selectedAsnwer.length < totalQuestions) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please answer all questions before submitting.'),
+        ),
+      );
+      return;
+    }
 
-    if (result > 40) {
-      logger.e("Total result is $result");
-     
+    double result = (countOfOnes / totalQuestions) * 100;
+    if (result < 40) {
+      DialogUtils.createConfirmationDialog(
+          context: context,
+          title: 'Fail',
+          width: MediaQuery.of(context).size.width / 1.2 * 2,
+          dialogType: DialogType.warning,
+          description: 'Quiz result is $result',
+          onOkPressed: () {
+            Modular.to.pop();
+          }).show();
+    } else if (result >= 40 && result < 80) {
+      DialogUtils.createConfirmationDialog(
+          context: context,
+          title: 'Pass',
+          width: MediaQuery.of(context).size.width / 1.2 * 2,
+          dialogType: DialogType.success,
+          description: 'Quiz result is $result',
+          onOkPressed: () {
+            Modular.to.pop();
+          }).show();
     } else {
-      logger.e("Total result is $result");
-     
+      DialogUtils.createConfirmationDialog(
+          context: context,
+          title: 'Distinction',
+          width: MediaQuery.of(context).size.width / 1.2 * 2,
+          dialogType: DialogType.success,
+          description: 'Quiz result is $result',
+          onOkPressed: () {
+            Modular.to.pop();
+          }).show();
     }
   }
 }
