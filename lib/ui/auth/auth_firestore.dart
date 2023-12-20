@@ -8,20 +8,21 @@ class AuthStore {
   Future<void> addUserToFirestore(
       {required String userId,
       required String name,
-      required String email}) async {
+      required String email,
+      required bool isAuth}) async {
     try {
       await _firestore.collection('users').doc(userId).set({
         'name': name,
         'email': email,
+        'isAuth' :isAuth
       });
-      //print("Successful user adding to firestore.");
+
+     // logger.e("Register success");
+    //print("Successful user adding to firestore.");
     } catch (error) {
+      // logger.e("Register fail $error");
       //print('Error adding user data to Firestore: $error');
       rethrow;
     }
   }
-
-
-
-
 }

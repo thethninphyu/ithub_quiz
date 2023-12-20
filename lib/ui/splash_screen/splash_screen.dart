@@ -22,10 +22,8 @@ class _SplashScreenState extends State<SplashScreen> {
       Auth().authStageChanges.listen((snapShot) {
         if (snapShot != null && snapShot.email != null) {
           AppRouter.changeRoute<AdminModule>(AppRoutes.root, context: context, isReplaceAll: true,);
-          //AppStrings.logger.e("Login email address is ${snapShot.email}");
         } else {
           AppRouter.changeRoute<AuthModule>(AppRoutes.login, context: context);
-          //AppStrings.logger.e("Login Failed");
         }
       });
     });

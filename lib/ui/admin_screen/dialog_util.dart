@@ -8,23 +8,22 @@ class DialogUtils {
     required double width,
     required DialogType dialogType,
     required String description,
+    bool showCancelButton = true,
     required Function() onOkPressed,
   }) {
-    return AwesomeDialog(context: context,
-    dialogType: dialogType,
-    width: width,
-    buttonsBorderRadius: const BorderRadius.all(Radius.circular(2)),
-    dismissOnTouchOutside: true,
-    dismissOnBackKeyPress: false,
-    headerAnimationLoop: false,
-    title: title,
-    desc: description,
-    showCloseIcon: true,
-    btnCancelOnPress: (() {
-      
-    }),
-    btnOkOnPress: onOkPressed,
-
+    return AwesomeDialog(
+      context: context,
+      dialogType: dialogType,
+      width: width,
+      buttonsBorderRadius: const BorderRadius.all(Radius.circular(2)),
+      dismissOnTouchOutside: true,
+      dismissOnBackKeyPress: false,
+      headerAnimationLoop: false,
+      title: title,
+      desc: description,
+      showCloseIcon: true,
+      btnCancelOnPress: showCancelButton ? (() {}) : null,
+      btnOkOnPress: onOkPressed,
     );
   }
 }

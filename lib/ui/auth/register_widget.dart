@@ -188,14 +188,15 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   const EdgeInsets.symmetric(vertical: 25.0),
                               width: double.infinity,
                               child: ElevatedButton(
-                                  onPressed: () {
+                                  onPressed: () async{
                                     if (_formKey.currentState!.validate()) {
-                                      Auth().createUserWithEmailAndPassword(
+                                   await Auth().createUserWithEmailAndPassword(
                                           email:
                                               emailController.text.toString(),
                                           password: passwordController.text
                                               .toString(),
-                                          name: nameController.text.toString()).then((_) => AppRouter.changeRoute<AdminModule>(AppRoutes.root, context: context));
+                                          name: nameController.text.toString(),
+                                          isAuth: false).then((_) => AppRouter.changeRoute<AdminModule>(AppRoutes.root, context: context));
                                     }
                                   },
                                   child: const Text(

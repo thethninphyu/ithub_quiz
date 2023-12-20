@@ -38,12 +38,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       const BoxDecoration(color: AppColors.secondaryColor),
                   height: height * 0.25,
                   width: width,
-                  child: Padding(
+                  child: const Padding(
                     padding: EdgeInsets.only(top: 50, left: 15, right: 15),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Dashboard',
                             style: TextStyle(
                                 fontSize: 28,
@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 color: AppColors.primaryColor,
                                 letterSpacing: 1),
                           ),
-                          const SizedBox(
+                          SizedBox(
                             height: 16,
                           ),
                           Text('Last Update : 7 day Set 2023',
@@ -82,7 +82,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             .snapshots(),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
-                            return const Text('Error occur in retrieving data');
+                            if (!snapshot.hasData) {
+                              return const Text(
+                                  'Error occur in retrieving data');
+                            } else {
+                              return const CircularProgressIndicator();
+                            }
                           }
 
                           if (snapshot.hasData) {

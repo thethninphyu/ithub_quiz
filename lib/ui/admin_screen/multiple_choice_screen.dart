@@ -222,7 +222,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                 );
               }
             } else {
-              return const Center(child: Text('Document does not exist'));
+              return const Center(child: CircularProgressIndicator());
             }
           },
         ),
@@ -253,6 +253,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
           width: MediaQuery.of(context).size.width / 1.2 * 2,
           dialogType: DialogType.warning,
           description: 'Quiz result is $result',
+          showCancelButton: false,
           onOkPressed: () {
             Modular.to.pop();
           }).show();
@@ -263,6 +264,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
           width: MediaQuery.of(context).size.width / 1.2 * 2,
           dialogType: DialogType.success,
           description: 'Quiz result is $result',
+          showCancelButton: false,
           onOkPressed: () {
             Modular.to.pop();
           }).show();
@@ -272,6 +274,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
           title: 'Distinction',
           width: MediaQuery.of(context).size.width / 1.2 * 2,
           dialogType: DialogType.success,
+          showCancelButton: false,
           description: 'Quiz result is $result',
           onOkPressed: () {
             Modular.to.pop();
