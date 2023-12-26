@@ -21,32 +21,30 @@ class Auth {
   }
 
   Future<void> createUserWithEmailAndPassword({
-  required String email,
-  required String password,
-  required String name,
-  required bool isAuth,
-}) async {
-  try {
-    await _firebaseAuth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-
-    if (currenUser != null) {
-  
-
-      AuthStore().addUserToFirestore(
-        userId: currenUser!.uid,
-        name: name,
+    required String email,
+    required String password,
+    required String name,
+    required String role,
+  }) async {
+    try {
+      await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
-        isAuth: isAuth,
+        password: password,
       );
+
+      if (currenUser != null) {
+        AuthStore().addUserToFirestore(
+          userId: currenUser!.uid,
+          name: name,
+          email: email,
+          role: role,
+        );
+      }
+    } catch (error) {
+      logger.e("Sign up error $error");
+      rethrow;
     }
-  } catch (error) {
-    logger.e("Sign up error $error");
-    rethrow;
   }
-}
 
   Future<String> getUserName() async {
     try {
@@ -69,7 +67,14 @@ class Auth {
     }
   }
 
+
+
   Future<void> signOut() async {
-    await _firebaseAuth.signOut();
+    try {
+      await _firebaseAuth.signOut();
+    //  logger.e('Sign out success');
+    } catch (e) {
+      //logger.e('Sign out error $e');
+    }
   }
 }

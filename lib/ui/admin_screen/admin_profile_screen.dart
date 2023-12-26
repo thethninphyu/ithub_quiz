@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ithub_quiz/ui/admin_screen/dialog_util.dart';
 import 'package:ithub_quiz/ui/auth/auth_firebase.dart';
+import 'package:ithub_quiz/utils/app_logger.dart';
 
 class AdminProfileScreen extends StatefulWidget {
   const AdminProfileScreen({super.key});
@@ -102,22 +103,30 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
                           height: 10,
                         ),
                         SizedBox(
-                            width: width,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                DialogUtils.createConfirmationDialog(
-                                    context: context,
-                                    title: 'Confirmation',
-                                    width: width / 1.2 * 2,
-                                    dialogType: DialogType.info,
-                                    description:
-                                        'Are you sure you want to sign out?',
-                                    onOkPressed: () {
-                                      Auth().signOut();
-                                    }).show();
-                              },
-                              child: const Text('Log out'),
-                            ))
+                          width: width,
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              try {
+                                await DialogUtils.createConfirmationDialog(
+                                  context: context,
+                                  title: 'Confirmation',
+                                  width: width / 1.2 * 2,
+                                  dialogType: DialogType.info,
+                                  description:
+                                      'Are you sure you want to sign out?',
+                                  onOkPressed: () async {
+                                    if (mounted) {
+                                      await Auth().signOut();
+                                    }
+                                  },
+                                ).show();
+                              } catch (e) {
+                                logger.e('Dialog error $e');
+                              }
+                            },
+                            child: const Text('Log out'),
+                          ),
+                        )
                       ],
                     ),
                   ),

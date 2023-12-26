@@ -166,7 +166,14 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                               height: 15,
                             ),
                             TextFormField(
-                              validator: FormValidator.validateEmail,
+                              validator: (email) {
+                                if (email!.isEmpty) {
+                                  return 'Please enter a email!';
+                                } else if (!FormValidator.isEmailValid(email)) {
+                                  return 'Please enter a valid email address';
+                                }
+                                return null;
+                              },
                               controller: emailController,
                               enableSuggestions: true,
                               keyboardType: TextInputType.emailAddress,
@@ -188,20 +195,26 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   const EdgeInsets.symmetric(vertical: 25.0),
                               width: double.infinity,
                               child: ElevatedButton(
-                                  onPressed: () async{
+                                  onPressed: () async {
                                     if (_formKey.currentState!.validate()) {
-                                   await Auth().createUserWithEmailAndPassword(
-                                          email:
-                                              emailController.text.toString(),
-                                          password: passwordController.text
-                                              .toString(),
-                                          name: nameController.text.toString(),
-                                          isAuth: false).then((_) => AppRouter.changeRoute<AdminModule>(AppRoutes.root, context: context));
+                                      await Auth()
+                                          .createUserWithEmailAndPassword(
+                                              email: emailController.text
+                                                  .toString(),
+                                              password: passwordController.text
+                                                  .toString(),
+                                              name: nameController.text
+                                                  .toString(),
+                                              role: 'user')
+                                          .then((_) => AppRouter.changeRoute<
+                                                  AdminModule>(AppRoutes.root,
+                                              context: context));
                                     }
                                   },
                                   child: const Text(
                                     'Register',
-                                    style: TextStyle(color: AppColors.primaryColor),
+                                    style: TextStyle(
+                                        color: AppColors.primaryColor),
                                   )),
                             ),
                             RichText(
@@ -218,7 +231,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
                                             AppRouter.changeRoute<AuthModule>(
-                                                AppRoutes.login, context: context);
+                                                AppRoutes.login,
+                                                context: context);
                                           })
                                   ]),
                             ),

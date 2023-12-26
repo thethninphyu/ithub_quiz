@@ -157,6 +157,14 @@ class _LoginWidgetState extends State<LoginWidget> {
                           children: [
                             TextFormField(
                               controller: _emailController,
+                              validator: (email) {
+                                if (email!.isEmpty) {
+                                  return 'Please enter an email address';
+                                } else if (!FormValidator.isEmailValid(email)) {
+                                  return 'Please enter a valid email address';
+                                }
+                                return null;
+                              },
                               enableSuggestions: true,
                               keyboardType: TextInputType.emailAddress,
                               decoration:

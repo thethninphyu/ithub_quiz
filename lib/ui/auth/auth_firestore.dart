@@ -9,12 +9,12 @@ class AuthStore {
       {required String userId,
       required String name,
       required String email,
-      required bool isAuth}) async {
+      required String role}) async {
     try {
       await _firestore.collection('users').doc(userId).set({
         'name': name,
         'email': email,
-        'isAuth' :isAuth
+        'role' :role
       });
 
      // logger.e("Register success");
