@@ -12,6 +12,7 @@ import 'package:ithub_quiz/ui/auth/auth_firebase.dart';
 import 'package:ithub_quiz/ui/auth/module/auth_module.dart';
 import 'package:ithub_quiz/utils/app_logger.dart';
 import 'package:ithub_quiz/utils/app_router.dart';
+import 'package:ithub_quiz/utils/share_util.dart';
 
 class LoginWidget extends StatefulWidget {
   const LoginWidget({super.key});
@@ -216,8 +217,9 @@ class _LoginWidgetState extends State<LoginWidget> {
                                             await retrieveUser(
                                                 _emailController.text);
                                         if (loggedInUser != null) {
-                                          logger.e(
-                                              'Login user role is ${loggedInUser.role}');
+                                          StoreUserData().setRole(loggedInUser.role);
+                                          // logger.e(
+                                          //     'Login user role is ${loggedInUser.role}');
                                         }
 
                                         // ignore: use_build_context_synchronously

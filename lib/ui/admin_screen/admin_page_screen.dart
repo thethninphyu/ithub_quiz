@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ithub_quiz/ui/profile/admin_profile_screen.dart';
 import 'package:ithub_quiz/ui/admin_screen/home_screen.dart';
-
 import 'package:ithub_quiz/ui/admin_screen/module/question_create/question_create_screen.dart';
+
+
+import 'package:ithub_quiz/utils/share_util.dart';
 
 class AdminPageScreen extends StatefulWidget {
   const AdminPageScreen({super.key});
@@ -14,16 +16,20 @@ class AdminPageScreen extends StatefulWidget {
 class _AdminPageScreenState extends State<AdminPageScreen> {
   int _currentIndex = 0;
   late PageController _pageController;
+  String userRole = '';
 
   final screens = [
     const HomeScreen(),
     const QuestionCreateScreen(),
     const AdminProfileScreen()
   ];
+
+  final userScreens = [const HomeScreen(), const AdminProfileScreen()];
+
   List title = ["Flutter", "Node Js", "Kotlin", "PhP"];
 
   //For admin view
-  List<BottomNavigationBarItem> navMenu = [
+  List<BottomNavigationBarItem> navAdminMenu = [
     const BottomNavigationBarItem(
         icon: Icon(Icons.home), backgroundColor: Colors.blue, label: 'Home'),
     const BottomNavigationBarItem(
@@ -46,11 +52,20 @@ class _AdminPageScreenState extends State<AdminPageScreen> {
         backgroundColor: Colors.blue,
         label: 'Profile'),
   ];
+
   @override
   void initState() {
     _pageController = PageController(initialPage: _currentIndex);
-    //retrieveUserRole();
+    retrieveUserRole();
     super.initState();
+  }
+
+  Future<void> retrieveUserRole() async {
+    final role = await StoreUserData().getRole();
+    setState(() {
+      userRole = role ?? '';
+     // logger.e('User Role is $userRole');
+    });
   }
 
   @override
@@ -64,7 +79,7 @@ class _AdminPageScreenState extends State<AdminPageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
-        items: navMenu,
+        items: userRole == 'admin' ? navAdminMenu : navUserMenu,
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
         onTap: (index) {
@@ -84,7 +99,7 @@ class _AdminPageScreenState extends State<AdminPageScreen> {
             _currentIndex = index;
           });
         },
-        children: screens,
+        children: userRole == 'admin' ? screens : userScreens,
       ),
     );
   }
