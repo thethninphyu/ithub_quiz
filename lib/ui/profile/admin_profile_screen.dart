@@ -2,11 +2,11 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ithub_quiz/ui/admin_screen/dialog_util.dart';
-import 'package:ithub_quiz/ui/app_module.dart';
+
 import 'package:ithub_quiz/ui/app_routes.dart';
 import 'package:ithub_quiz/ui/auth/auth_firebase.dart';
 import 'package:ithub_quiz/ui/auth/module/auth_module.dart';
-import 'package:ithub_quiz/ui/auth/module/auth_routes.dart';
+
 import 'package:ithub_quiz/utils/app_logger.dart';
 import 'package:ithub_quiz/utils/app_router.dart';
 
@@ -137,8 +137,6 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
                                               AppRouter.changeRoute<AuthModule>(
                                                   AppRoutes.login,
                                                   isReplaceAll: true));
-                                      // Modular.to.pushNamedAndRemoveUntil(
-                                      //   '/admin/login', (route) => false);
                                     }
                                   },
                                 ).show();
