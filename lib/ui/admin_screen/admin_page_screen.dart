@@ -4,7 +4,6 @@ import 'package:ithub_quiz/ui/admin_screen/admin_profile_screen.dart';
 import 'package:ithub_quiz/ui/admin_screen/home_screen.dart';
 import 'package:ithub_quiz/ui/admin_screen/model/userData.dart';
 import 'package:ithub_quiz/ui/admin_screen/module/question_create/question_create_screen.dart';
-import 'package:ithub_quiz/utils/app_logger.dart';
 
 class AdminPageScreen extends StatefulWidget {
   const AdminPageScreen({super.key});
@@ -59,6 +58,7 @@ class _AdminPageScreenState extends State<AdminPageScreen> {
   void dispose() {
     _pageController.dispose();
     retrieveUserRole();
+    
     super.dispose();
   }
 
@@ -75,7 +75,7 @@ class _AdminPageScreenState extends State<AdminPageScreen> {
       );
     }).toList();
 
-    logger.e('User Data List ${userDataList[0].role}');
+    //logger.e('User Data List ${userDataList[0].role}');
 
     return userDataList;
   }

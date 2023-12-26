@@ -1,8 +1,11 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 import 'package:ithub_quiz/ui/admin_screen/dialog_util.dart';
+
 import 'package:ithub_quiz/ui/auth/auth_firebase.dart';
+
 import 'package:ithub_quiz/utils/app_logger.dart';
 
 class AdminProfileScreen extends StatefulWidget {
@@ -14,6 +17,11 @@ class AdminProfileScreen extends StatefulWidget {
 
 class _AdminProfileScreenState extends State<AdminProfileScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,8 +94,12 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
                             } else if (snapshot.hasError) {
                               return Text('Error: ${snapshot.error}');
                             } else {
-                              return DynamicPersonalwidget(
-                                  'Name', Icons.person, snapshot.data!);
+                              if (mounted) {
+                                return DynamicPersonalwidget(
+                                    'Name', Icons.person, snapshot.data!);
+                              } else {
+                                return const SizedBox();
+                              }
                             }
                           },
                         ),
@@ -117,6 +129,8 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
                                   onOkPressed: () async {
                                     if (mounted) {
                                       await Auth().signOut();
+                                      // Modular.to.pushNamedAndRemoveUntil(
+                                      //   '/admin/login', (route) => false);
                                     }
                                   },
                                 ).show();
