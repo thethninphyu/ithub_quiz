@@ -1,8 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ithub_quiz/ui/admin_screen/admin_profile_screen.dart';
 import 'package:ithub_quiz/ui/admin_screen/home_screen.dart';
-import 'package:ithub_quiz/ui/admin_screen/model/userData.dart';
+
 import 'package:ithub_quiz/ui/admin_screen/module/question_create/question_create_screen.dart';
 
 class AdminPageScreen extends StatefulWidget {
@@ -50,35 +49,17 @@ class _AdminPageScreenState extends State<AdminPageScreen> {
   @override
   void initState() {
     _pageController = PageController(initialPage: _currentIndex);
-    retrieveUserRole();
+    //retrieveUserRole();
     super.initState();
   }
 
   @override
   void dispose() {
     _pageController.dispose();
-    retrieveUserRole();
-    
+
     super.dispose();
   }
 
-  Future<List<UserData>> retrieveUserRole() async {
-    QuerySnapshot<Map<String, dynamic>> snapshot =
-        await FirebaseFirestore.instance.collection('users').get();
-
-    List<UserData> userDataList = snapshot.docs.map((doc) {
-      Map<String, dynamic> data = doc.data();
-      return UserData(
-        email: data['email'] ?? '',
-        role: data['role'] ?? '',
-        name: '',
-      );
-    }).toList();
-
-    //logger.e('User Data List ${userDataList[0].role}');
-
-    return userDataList;
-  }
 
   @override
   Widget build(BuildContext context) {

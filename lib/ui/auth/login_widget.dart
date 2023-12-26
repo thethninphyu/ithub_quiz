@@ -1,13 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ithub_quiz/constants/colors.dart';
+import 'package:ithub_quiz/ui/admin_screen/model/userData.dart';
 import 'package:ithub_quiz/ui/admin_screen/module/admin_module.dart';
 import 'package:ithub_quiz/ui/admin_screen/module/question_create/validation/validation.dart';
 import 'package:ithub_quiz/ui/app_routes.dart';
 import 'package:ithub_quiz/ui/auth/auth_firebase.dart';
 import 'package:ithub_quiz/ui/auth/module/auth_module.dart';
+import 'package:ithub_quiz/utils/app_logger.dart';
 import 'package:ithub_quiz/utils/app_router.dart';
 
 class LoginWidget extends StatefulWidget {
@@ -208,7 +211,16 @@ class _LoginWidgetState extends State<LoginWidget> {
                                               email: _emailController.text,
                                               password:
                                                   _passwordController.text)
-                                          .then((_) {
+                                          .then((_) async {
+                                        UserData? loggedInUser =
+                                            await retrieveUser(
+                                                _emailController.text);
+                                        if (loggedInUser != null) {
+                                          logger.e(
+                                              'Login user role is ${loggedInUser.role}');
+                                        }
+
+                                        // ignore: use_build_context_synchronously
                                         AppRouter.changeRoute<AdminModule>(
                                             AppRoutes.root,
                                             isReplaceAll: true,
@@ -285,5 +297,30 @@ class _LoginWidgetState extends State<LoginWidget> {
                 ],
               ),
             )));
+  }
+}
+
+Future<UserData?> retrieveUser(String userEmail) async {
+  try {
+    QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+        .instance
+        .collection('users')
+        .where('email', isEqualTo: userEmail)
+        .get();
+
+    if (snapshot.docs.isNotEmpty) {
+      Map<String, dynamic> data = snapshot.docs[0].data();
+      return UserData(
+        email: data['email'] ?? '',
+        role: data['role'] ?? '',
+        name: '',
+      );
+    } else {
+      logger.e('User not found in Firestore');
+      return null;
+    }
+  } catch (error) {
+    logger.e('Error retrieving user data: $error');
+    return null;
   }
 }
