@@ -31,7 +31,7 @@ class AppRouter {
     Object? args,
     bool? isReplace,
     bool? isReplaceAll,
-    required BuildContext context,
+    BuildContext? context,
   }) {
     String tempRoute = "";
 

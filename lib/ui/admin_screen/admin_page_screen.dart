@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ithub_quiz/ui/admin_screen/admin_profile_screen.dart';
+import 'package:ithub_quiz/ui/profile/admin_profile_screen.dart';
 import 'package:ithub_quiz/ui/admin_screen/home_screen.dart';
 
 import 'package:ithub_quiz/ui/admin_screen/module/question_create/question_create_screen.dart';
@@ -59,7 +59,6 @@ class _AdminPageScreenState extends State<AdminPageScreen> {
 
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
