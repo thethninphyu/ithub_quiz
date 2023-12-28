@@ -51,6 +51,7 @@ class AppRouter {
       case ChoiceFormModule:
         tempRoute = AppRoutes.admin + AdminRoutes.multipleChoiceScreen;
         break;
+
     }
 
     _goToNextPage(

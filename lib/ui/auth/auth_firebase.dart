@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ithub_quiz/ui/auth/auth_firestore.dart';
 import 'package:ithub_quiz/utils/app_logger.dart';
 

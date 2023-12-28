@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ithub_quiz/ui/admin_screen/quiz_ans_screen.dart';
 import 'package:ithub_quiz/ui/profile/admin_profile_screen.dart';
 import 'package:ithub_quiz/ui/admin_screen/home_screen.dart';
-import 'package:ithub_quiz/ui/admin_screen/module/question_create/question_create_screen.dart';
-
 
 import 'package:ithub_quiz/utils/share_util.dart';
 
@@ -19,12 +18,16 @@ class _AdminPageScreenState extends State<AdminPageScreen> {
   String userRole = '';
 
   final screens = [
-    const HomeScreen(),
-    const QuestionCreateScreen(),
+    const HomeScreen(status : "home"),
+    const HomeScreen(status: "createQuestion",),
     const AdminProfileScreen()
   ];
 
-  final userScreens = [const HomeScreen(), const AdminProfileScreen()];
+  final userScreens = [
+    const HomeScreen(status: "home",),
+    const QuizAnswerScreen(),
+    const AdminProfileScreen()
+  ];
 
   List title = ["Flutter", "Node Js", "Kotlin", "PhP"];
 
@@ -48,6 +51,8 @@ class _AdminPageScreenState extends State<AdminPageScreen> {
     const BottomNavigationBarItem(
         icon: Icon(Icons.home), backgroundColor: Colors.blue, label: 'Home'),
     const BottomNavigationBarItem(
+        icon: Icon(Icons.quiz), backgroundColor: Colors.blue, label: 'Quiz'),
+    const BottomNavigationBarItem(
         icon: Icon(Icons.account_circle),
         backgroundColor: Colors.blue,
         label: 'Profile'),
@@ -57,14 +62,16 @@ class _AdminPageScreenState extends State<AdminPageScreen> {
   void initState() {
     _pageController = PageController(initialPage: _currentIndex);
     retrieveUserRole();
+   
     super.initState();
   }
 
+ 
   Future<void> retrieveUserRole() async {
     final role = await StoreUserData().getRole();
     setState(() {
       userRole = role ?? '';
-     // logger.e('User Role is $userRole');
+      // logger.e('User Role is $userRole');
     });
   }
 
