@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: const BoxDecoration(color: AppColors.secondaryColor),
         height: height * 0.25,
         width: width,
-        child: const Padding(
+        child: Padding(
           padding: EdgeInsets.only(top: 50, left: 15, right: 15),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -90,10 +90,11 @@ class _HomeScreenState extends State<HomeScreen> {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
     return Scaffold(
-
         appBar: getAppBar(),
         body: Container(
-            color: widget.status == "home"? AppColors.secondaryColor : AppColors.primaryColor ,
+            color: widget.status == "home"
+                ? AppColors.secondaryColor
+                : AppColors.primaryColor,
             child: Column(
               children: [
                 getDashboardWidget(),
