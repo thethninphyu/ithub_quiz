@@ -1,5 +1,5 @@
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:ithub_quiz/utils/app_logger.dart';
+
 
 Reference get firebaseStorage => FirebaseStorage.instance.ref();
 
@@ -16,10 +16,10 @@ class AuthFireStorage {
         downloadURLs.add(downloadURL);
       }
 
-      logger.e('Image Path is $downloadURLs');
+    //  logger.e('Image Path is $downloadURLs');
       return downloadURLs;
     } catch (e) {
-      logger.e('Image can not retreve $e');
+     // logger.e('Image can not retreve $e');
     }
     return [];
   }

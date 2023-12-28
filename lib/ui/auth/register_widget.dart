@@ -184,6 +184,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                               height: 15,
                             ),
                             TextFormField(
+                              validator: FormValidator.validatePassword,
                               controller: passwordController,
                               enableSuggestions: true,
                               keyboardType: TextInputType.visiblePassword,
