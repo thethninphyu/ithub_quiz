@@ -6,3 +6,11 @@ class Answer {
 
   Map<String, dynamic> toJson() => {'isChecked': isChecked, 'answer': answer};
 }
+
+class AnswerList {
+  final Answer answer;
+
+  AnswerList(this.answer);
+
+  Map<String, dynamic> toJson() => {'answer': answer.toJson()};
+}
