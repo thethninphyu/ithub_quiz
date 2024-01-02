@@ -243,7 +243,7 @@ class _MultipleChoiceScreenState extends State<QuizAnswerScreen> {
     return SizedBox(
       height: 150,
       child: ListView.builder(
-          itemCount: 3,
+          itemCount: questionAndAnswer.length,
           itemBuilder: ((context, index) {
             return ListTile(
               title: Text(questionAndAnswer[index]['questionsAndAnswers']

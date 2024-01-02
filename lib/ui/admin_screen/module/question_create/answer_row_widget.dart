@@ -37,9 +37,6 @@ class _AnswerRowState extends State<AnswerRow> {
               selectedOption = selectedValue;
             });
             widget.isChecked(selectedOption!);
-            if (textFieldController.text.isNotEmpty) {
-              widget.onControllerChanged(textFieldController);
-            }
             logger.e(widget.index);
             logger.e('selected option $selectedOption');
           },
@@ -55,6 +52,11 @@ class _AnswerRowState extends State<AnswerRow> {
               labelText: 'Enter some text',
               border: OutlineInputBorder(),
             ),
+            onChanged: ((value) {
+              if (textFieldController.text.isNotEmpty) {
+                widget.onControllerChanged(textFieldController);
+              }
+            }),
           ),
         ),
       ],
