@@ -13,8 +13,8 @@ class MultipleChoiceScreen extends StatefulWidget {
 }
 
 class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
-  List<String?> _groupValues = [];
-  List<int?> _selectedAsnwer = [];
+  List<String?> groupValues = [];
+  List<int?> selectedAsnwer = [];
 
   late dynamic questionAndAnswer = [];
 
@@ -115,29 +115,29 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                               answerIndex]['answer']
                                                           .toString(),
                                                       style: TextStyle(
-                                                        color: _groupValues
+                                                        color: groupValues
                                                                         .length >
                                                                     index &&
-                                                                _groupValues[
+                                                                groupValues[
                                                                         index] ==
                                                                     '$index$answerIndex'
                                                             ? Colors.blue
                                                             : Colors.black,
                                                       ),
                                                     ),
-                                                    activeColor: _groupValues
+                                                    activeColor: groupValues
                                                                     .length >
                                                                 index &&
-                                                            _groupValues[
+                                                            groupValues[
                                                                     index] ==
                                                                 '$index$answerIndex'
                                                         ? Colors.blue
                                                         : Colors.grey,
                                                     value: '$index$answerIndex',
-                                                    groupValue: _groupValues
+                                                    groupValue: groupValues
                                                                 .length >
                                                             index
-                                                        ? _groupValues[index]
+                                                        ? groupValues[index]
                                                         : null,
                                                     onChanged: (selectedValue) {
                                                       setState(() {
@@ -153,28 +153,28 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                                     answerIndex]
                                                                 ['isChecked'];
 
-                                                        if (_groupValues
+                                                        if (groupValues
                                                                 .length >
                                                             index) {
-                                                          _groupValues[index] =
+                                                          groupValues[index] =
                                                               selectedValue!;
 
                                                           if (isChecked) {
-                                                            _selectedAsnwer[
+                                                            selectedAsnwer[
                                                                 index] = 1;
                                                           } else {
-                                                            _selectedAsnwer[
+                                                            selectedAsnwer[
                                                                 index] = 0;
                                                           }
                                                         } else {
-                                                          _groupValues.add(
+                                                          groupValues.add(
                                                               selectedValue!);
 
                                                           if (isChecked) {
-                                                            _selectedAsnwer
+                                                           selectedAsnwer
                                                                 .add(1);
                                                           } else {
-                                                            _selectedAsnwer
+                                                            selectedAsnwer
                                                                 .add(0);
                                                           }
                                                         }
@@ -234,9 +234,9 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
 
   void calculateResult() {
     int totalQuestions = questionAndAnswer.length;
-    int countOfOnes = _selectedAsnwer.where((value) => value == 1).length;
+    int countOfOnes = selectedAsnwer.where((value) => value == 1).length;
 
-    if (_selectedAsnwer.length < totalQuestions) {
+    if (selectedAsnwer.length < totalQuestions) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please answer all questions before submitting.'),

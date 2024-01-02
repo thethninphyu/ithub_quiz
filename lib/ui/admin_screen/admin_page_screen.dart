@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ithub_quiz/ui/admin_screen/quiz_ans_screen.dart';
 import 'package:ithub_quiz/ui/profile/admin_profile_screen.dart';
 import 'package:ithub_quiz/ui/admin_screen/home_screen.dart';
-
 import 'package:ithub_quiz/utils/share_util.dart';
 
 class AdminPageScreen extends StatefulWidget {
@@ -18,13 +17,17 @@ class _AdminPageScreenState extends State<AdminPageScreen> {
   String userRole = '';
 
   final screens = [
-    const HomeScreen(status : "home"),
-    const HomeScreen(status: "createQuestion",),
+    const HomeScreen(status: "home"),
+    const HomeScreen(
+      status: "createQuestion",
+    ),
     const AdminProfileScreen()
   ];
 
   final userScreens = [
-    const HomeScreen(status: "home",),
+    const HomeScreen(
+      status: "home",
+    ),
     const QuizAnswerScreen(),
     const AdminProfileScreen()
   ];
@@ -62,11 +65,10 @@ class _AdminPageScreenState extends State<AdminPageScreen> {
   void initState() {
     _pageController = PageController(initialPage: _currentIndex);
     retrieveUserRole();
-   
+
     super.initState();
   }
 
- 
   Future<void> retrieveUserRole() async {
     final role = await StoreUserData().getRole();
     setState(() {
