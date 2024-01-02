@@ -5,6 +5,7 @@ import 'package:ithub_quiz/ui/admin_screen/model/answer.dart';
 import 'package:ithub_quiz/ui/admin_screen/model/language_type.dart';
 import 'package:ithub_quiz/ui/admin_screen/module/question_create/answer_row_widget.dart';
 import 'package:ithub_quiz/ui/admin_screen/module/question_create/validation/validation.dart';
+import 'package:ithub_quiz/utils/app_logger.dart';
 
 class QuestionScreen extends StatefulWidget {
   const QuestionScreen({Key? key}) : super(key: key);
@@ -40,10 +41,12 @@ class _QuestionScreenState extends State<QuestionScreen> {
         index: newIndex,
         onDelete: _removeAnswerRow,
         isChecked: (check) {
-          checkFun(check);
-         // logger.e('isChecked :$value');
+          logger.e(check);
+          check == 1 ? checkFun(true) : checkFun(false);
+          // logger.e('isChecked :$value');
         },
         onControllerChanged: (controller) {
+          logger.e(controller);
           _updateAnswerDataList(newIndex, controller.text);
         },
       );
@@ -104,7 +107,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                 
                   ListView.builder(
                     shrinkWrap: true,
                     itemCount: answerRows.length,
@@ -112,7 +114,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
                       return answerRows[index];
                     },
                   ),
-
                   const SizedBox(
                     height: 16,
                   ),

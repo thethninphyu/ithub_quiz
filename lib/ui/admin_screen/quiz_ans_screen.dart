@@ -13,10 +13,11 @@ class QuizAnswerScreen extends StatefulWidget {
 }
 
 class _MultipleChoiceScreenState extends State<QuizAnswerScreen> {
-  List<String?> _groupValues = [];
-  List<int?> _selectedAsnwer = [];
+  List<String?> groupValues = [];
+  List<int?> selectedAsnwer = [];
 
   late dynamic questionAndAnswer = [];
+  bool showExpansion = false;
 
   @override
   Widget build(BuildContext context) {
@@ -115,31 +116,35 @@ class _MultipleChoiceScreenState extends State<QuizAnswerScreen> {
                                                               answerIndex]['answer']
                                                           .toString(),
                                                       style: TextStyle(
-                                                        color: _groupValues
+                                                        color: groupValues
                                                                         .length >
                                                                     index &&
-                                                                _groupValues[
+                                                                groupValues[
                                                                         index] ==
                                                                     '$index$answerIndex'
                                                             ? Colors.blue
                                                             : Colors.black,
                                                       ),
                                                     ),
-                                                    activeColor: _groupValues
+                                                    activeColor: groupValues
                                                                     .length >
                                                                 index &&
-                                                            _groupValues[
+                                                            groupValues[
                                                                     index] ==
                                                                 '$index$answerIndex'
                                                         ? Colors.blue
                                                         : Colors.grey,
                                                     value: '$index$answerIndex',
-                                                    groupValue: _groupValues
-                                                                .length >
-                                                            index
-                                                        ? _groupValues[index]
-                                                        : null,
+                                                    groupValue:
+                                                        groupValues.length >
+                                                                index
+                                                            ? groupValues[index]
+                                                            : null,
                                                     onChanged: (selectedValue) {
+                                                      selectedValue!.isNotEmpty
+                                                          ? showExpansion = true
+                                                          : showExpansion =
+                                                              false;
                                                       setState(() {
                                                         // logger.e(
                                                         //     'Value change $selectedValue');
@@ -153,34 +158,33 @@ class _MultipleChoiceScreenState extends State<QuizAnswerScreen> {
                                                                     answerIndex]
                                                                 ['isChecked'];
 
-                                                        if (_groupValues
-                                                                .length >
+                                                        if (groupValues.length >
                                                             index) {
-                                                          _groupValues[index] =
+                                                          groupValues[index] =
                                                               selectedValue!;
 
                                                           if (isChecked) {
-                                                            _selectedAsnwer[
+                                                            selectedAsnwer[
                                                                 index] = 1;
                                                           } else {
-                                                            _selectedAsnwer[
+                                                            selectedAsnwer[
                                                                 index] = 0;
                                                           }
                                                         } else {
-                                                          _groupValues.add(
+                                                          groupValues.add(
                                                               selectedValue!);
 
                                                           if (isChecked) {
-                                                            _selectedAsnwer
+                                                            selectedAsnwer
                                                                 .add(1);
                                                           } else {
-                                                            _selectedAsnwer
+                                                            selectedAsnwer
                                                                 .add(0);
                                                           }
                                                         }
 
                                                         // logger.e(
-                                                        //     "Selected Answer list is $_selectedAsnwer");
+                                                        //     "Selected Answer list is $selectedAsnwer");
                                                       });
                                                     },
                                                   ),
@@ -190,6 +194,9 @@ class _MultipleChoiceScreenState extends State<QuizAnswerScreen> {
                                           ),
                                       ],
                                     ),
+                                  !showExpansion
+                                      ? const SizedBox()
+                                      : _buildPanel(),
                                   const Divider(
                                       height: 1, color: Colors.black12),
                                 ],
@@ -232,11 +239,26 @@ class _MultipleChoiceScreenState extends State<QuizAnswerScreen> {
     }
   }
 
+  Widget _buildPanel() {
+    return SizedBox(
+      height: 150,
+      child: ListView.builder(
+          itemCount: 3,
+          itemBuilder: ((context, index) {
+            return ListTile(
+              title: Text(questionAndAnswer[index]['questionsAndAnswers']
+                      ['answers'][index]['answer']
+                  .toString()),
+            );
+          })),
+    );
+  }
+
   void calculateResult() {
     int totalQuestions = questionAndAnswer.length;
-    int countOfOnes = _selectedAsnwer.where((value) => value == 1).length;
+    int countOfOnes = selectedAsnwer.where((value) => value == 1).length;
 
-    if (_selectedAsnwer.length < totalQuestions) {
+    if (selectedAsnwer.length < totalQuestions) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please answer all questions before submitting.'),

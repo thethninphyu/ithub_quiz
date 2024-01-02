@@ -4,8 +4,8 @@ import 'package:ithub_quiz/utils/app_logger.dart';
 class AnswerRow extends StatefulWidget {
   final int index;
   final ValueChanged<int> onDelete;
-  final Function(bool) isChecked;
-  final void Function(TextEditingController) onControllerChanged;
+  final Function(int) isChecked;
+  final Function(TextEditingController) onControllerChanged;
   const AnswerRow({
     Key? key,
     required this.index,
@@ -35,8 +35,13 @@ class _AnswerRowState extends State<AnswerRow> {
           onChanged: (selectedValue) {
             setState(() {
               selectedOption = selectedValue;
-              logger.e('selected option $selectedOption');
             });
+            widget.isChecked(selectedOption!);
+            if (textFieldController.text.isNotEmpty) {
+              widget.onControllerChanged(textFieldController);
+            }
+            logger.e(widget.index);
+            logger.e('selected option $selectedOption');
           },
         ),
         const SizedBox(width: 5),
