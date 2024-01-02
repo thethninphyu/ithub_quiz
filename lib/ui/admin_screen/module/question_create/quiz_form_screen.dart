@@ -19,7 +19,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
   final _formKey = GlobalKey<FormState>();
 
   List<AnswerRow> answerRows = [];
-  List<Answer> answerList = [];
+ 
+  List<Answer> answerDataList = [];
 
   TextEditingController answerController = TextEditingController();
 
@@ -49,20 +50,17 @@ class _QuestionScreenState extends State<QuestionScreen> {
           logger.e(controller);
           _updateAnswerDataList(newIndex, controller.text);
         },
-        answerDataList: (answerDataList) {
-          answerDataList
-              .add(Answer(isChecked, answerController.text.toString()));
-          answerList = answerDataList;
-        },
       );
+      answerDataList.add(Answer(isChecked, answerController.text.toString()));
+
       answerRows.add(newAnswerRow);
     });
   }
 
   void _updateAnswerDataList(int index, String newText) {
     setState(() {
-      if (index < answerList.length) {
-        answerList[index] = Answer(isChecked, newText);
+      if (index < answerDataList.length) {
+        answerDataList[index] = Answer(isChecked, newText);
       }
     });
   }
@@ -146,7 +144,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                             // Build the question document
                             Map<String, dynamic> questionData = {
                               'question': question.text,
-                              'answers': answerList
+                              'answers': answerDataList
                                   .map((answer) => answer.toJson())
                                   .toList(),
                             };
