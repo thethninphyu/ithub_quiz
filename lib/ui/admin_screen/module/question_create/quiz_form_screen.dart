@@ -47,11 +47,10 @@ class _QuestionScreenState extends State<QuestionScreen> {
         },
         onControllerChanged: (controller) {
           logger.e(controller);
-          _updateAnswerDataList(newIndex, controller.text);
+          //_updateAnswerDataList(newIndex, controller.text);
         },
         answerDataList: (answerDataList) {
-          answerDataList
-              .add(Answer(isChecked, answerController.text.toString()));
+          answerDataList.add(answerDataList);
           answerList = answerDataList;
         },
       );
@@ -59,13 +58,13 @@ class _QuestionScreenState extends State<QuestionScreen> {
     });
   }
 
-  void _updateAnswerDataList(int index, String newText) {
-    setState(() {
-      if (index < answerList.length) {
-        answerList[index] = Answer(isChecked, newText);
-      }
-    });
-  }
+  // void _updateAnswerDataList(int index, String newText) {
+  //   setState(() {
+  //     if (index < answerList.length) {
+  //       answerList[index] = Answer(isChecked, newText);
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
