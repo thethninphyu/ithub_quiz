@@ -5,7 +5,6 @@ import 'package:ithub_quiz/ui/admin_screen/model/answer.dart';
 import 'package:ithub_quiz/ui/admin_screen/model/language_type.dart';
 import 'package:ithub_quiz/ui/admin_screen/module/question_create/answer_row_widget.dart';
 import 'package:ithub_quiz/ui/admin_screen/module/question_create/validation/validation.dart';
-import 'package:ithub_quiz/utils/app_logger.dart';
 
 class QuestionScreen extends StatefulWidget {
   const QuestionScreen({Key? key}) : super(key: key);
@@ -19,16 +18,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
   final _formKey = GlobalKey<FormState>();
 
   List<AnswerRow> answerRows = [];
- 
   List<Answer> answerDataList = [];
-
   TextEditingController answerController = TextEditingController();
-
-  bool isChecked = false;
-
-  checkFun(bool check) {
-    isChecked = check;
-  }
 
   void _removeAnswerRow(int index) {
     setState(() {
@@ -39,25 +30,24 @@ class _QuestionScreenState extends State<QuestionScreen> {
   void _addAnswerRow() {
     setState(() {
       int newIndex = answerRows.length;
+      bool isLocalChecked = false;
+
       AnswerRow newAnswerRow = AnswerRow(
         index: newIndex,
         onDelete: _removeAnswerRow,
-        isChecked: (check) {
-          check == 1 ? isChecked = true : isChecked = false;
-          // logger.e('isChecked :$value');
-        },
-        onControllerChanged: (controller) {
-          logger.e(controller);
-          _updateAnswerDataList(newIndex, controller.text);
+        onAnswerChanged: (isChecked, newAnswer) {
+          _updateAnswerDataList(newIndex, newAnswer, isChecked);
         },
       );
-      answerDataList.add(Answer(isChecked, answerController.text.toString()));
+
+      answerDataList
+          .add(Answer(isLocalChecked, answerController.text.toString()));
 
       answerRows.add(newAnswerRow);
     });
   }
 
-  void _updateAnswerDataList(int index, String newText) {
+  void _updateAnswerDataList(int index, String newText, bool isChecked) {
     setState(() {
       if (index < answerDataList.length) {
         answerDataList[index] = Answer(isChecked, newText);
@@ -136,36 +126,44 @@ class _QuestionScreenState extends State<QuestionScreen> {
                       child: ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            EasyLoading.show(
-                              status: 'Loading...',
-                              maskType: EasyLoadingMaskType.black,
-                            );
-
-                            // Build the question document
-                            Map<String, dynamic> questionData = {
-                              'question': question.text,
-                              'answers': answerDataList
-                                  .map((answer) => answer.toJson())
-                                  .toList(),
-                            };
-
-                            // logger.e(
-                            //     "Answer Data List ${answerDataList.map((answer) => answer.toJson()).toList()}");
-
-                            FirebaseFirestore.instance
-                                .collection('languages')
-                                .doc(languages.id)
-                                .update({
-                                  'questionAndAnswer': FieldValue.arrayUnion([
-                                    {
-                                      'questionsAndAnswers': questionData,
-                                    }
-                                  ])
-                                })
-                                .then((_) => EasyLoading.dismiss())
-                                .catchError((error) => {
-                                      EasyLoading.dismiss(),
-                                    });
+                            if (answerDataList.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content:
+                                      Text('Please add at least one answer.'),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                            } else {
+                              EasyLoading.show(
+                                status: 'Loading...',
+                                maskType: EasyLoadingMaskType.black,
+                              );
+                              // Build the question document
+                              Map<String, dynamic> questionData = {
+                                'question': question.text,
+                                'answers': answerDataList
+                                    .map((answer) => answer.toJson())
+                                    .toList(),
+                              };
+                              FirebaseFirestore.instance
+                                  .collection('languages')
+                                  .doc(languages.id)
+                                  .update({
+                                    'questionAndAnswer': FieldValue.arrayUnion([
+                                      {
+                                        'questionsAndAnswers': questionData,
+                                      }
+                                    ])
+                                  })
+                                  .then((_) => {
+                                        EasyLoading.dismiss(),
+                                        Navigator.pop(context)
+                                      })
+                                  .catchError((error) => {
+                                        EasyLoading.dismiss(),
+                                      });
+                            }
                           }
                         },
                         child: const Text('Upload'),
