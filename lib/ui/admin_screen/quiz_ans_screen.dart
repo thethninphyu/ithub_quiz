@@ -112,17 +112,16 @@ class _QuizAnswerScreenState extends State<QuizAnswerScreen> {
 
                 Expanded(
                   child: ListView.builder(
-                    scrollDirection: Axis.vertical,
+                      scrollDirection: Axis.vertical,
                       itemCount: questionAndAnswer.length,
                       itemBuilder: (context, index) {
-                        Text(
+                        return Text(
                           'Q. ${questionAndAnswer?[index]['questionsAndAnswers']['question']}',
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         );
-                        return null;
                       }),
                 )
 
