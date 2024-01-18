@@ -128,7 +128,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                           if (_formKey.currentState!.validate()) {
                             if (answerDataList.isEmpty) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
+                                const SnackBar(
                                   content:
                                       Text('Please add at least one answer.'),
                                   duration: Duration(seconds: 2),

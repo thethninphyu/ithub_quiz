@@ -11,7 +11,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
   try {
     await Firebase.initializeApp();
-    // AppStrings.logger.e("Firebase initialize Success");
+  
   } catch (error) {
     logger.e("Firebase initialize Failed");
   }

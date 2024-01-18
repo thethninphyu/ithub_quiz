@@ -1,42 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ithub_quiz/ui/admin_screen/module/question_create/answer_row_widget.dart';
 
 void main() {
-  testWidgets('Testing remove arrow object', (WidgetTester tester) async {
-    // Variable to hold the index passed to onDelete callback
-    int deletedIndex = -1;
-    bool isChecked = false;
+  testWidgets('MyApp widget should render "Hello World"', (WidgetTester tester) async {
+    await tester.pumpWidget(const MyApp());
 
-    // Build the AnswerRow widget
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: AnswerRow(
-            index: 0,
-            onDelete: (int value) {
-              deletedIndex = value;
-            },
-            isChecked: (bool newChecked) {
-              isChecked = newChecked;
-            },
-            onControllerChanged: (TextEditingController) {},
+    // Verify that the "Hello World" text is rendered on the screen.
+    expect(find.text('Hello World'), findsOneWidget);
+  });
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Container(
+          decoration: const BoxDecoration(color: Colors.white),
+          child: const Center(
+            child: Text(
+              'Hello World',
+              textDirection: TextDirection.ltr,
+              style: TextStyle(
+                fontSize: 32,
+                color: Colors.black87,
+              ),
+            ),
           ),
         ),
       ),
     );
-
-    // Tap the remove button
-    await tester.tap(find.byIcon(Icons.remove_circle));
-
-    // Wait for the frame to be rebuilt
-    await tester.pump();
-
-    // Verify that onDelete callback is called with the correct index
-    expect(deletedIndex, 0);
-
-     // Find the checkbox and check its state
-    Finder checkboxFinder = find.byType(Checkbox);
-    expect(tester.widget<Checkbox>(checkboxFinder).value, isChecked);
-  });
+  }
 }

@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ithub_quiz/ui/admin_screen/model/language_type.dart';
+import 'package:ithub_quiz/ui/admin_screen/model/snapShotData.dart';
+
+import 'package:ithub_quiz/utils/app_logger.dart';
 
 class QuizAnswerScreen extends StatefulWidget {
   const QuizAnswerScreen({Key? key}) : super(key: key);
@@ -11,17 +15,18 @@ class QuizAnswerScreen extends StatefulWidget {
 
 class _QuizAnswerScreenState extends State<QuizAnswerScreen> {
   List<String?> groupValues = [];
-
+  late dynamic argument;
 
   late Timer _timer;
   int _timerDuration = 30;
-  late dynamic questionAndAnswer;
+  dynamic questionAndAnswer;
 
   @override
   void initState() {
     super.initState();
-     startTimer();
-    _loadNextQuestion();
+
+    _retreveDataFromFirestore();
+    startTimer();
   }
 
   @override
@@ -32,23 +37,52 @@ class _QuizAnswerScreenState extends State<QuizAnswerScreen> {
 
   int _currentQuestionIndex = 0;
 
+  void _retreveDataFromFirestore() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      argument = ModalRoute.of(context)!.settings.arguments;
+      if (argument is SnapShotDataQue) {
+        FirebaseFirestore.instance
+            .collection('languages')
+            .doc(argument.id)
+            .get()
+            .then((snapshot) {
+          if (snapshot.exists) {
+            setState(() {
+              questionAndAnswer = snapshot.data()!['questionAndAnswer'];
+
+              logger.e('Que and Ans $questionAndAnswer');
+              logger.e('${snapshot.data()?['questionAndAnswer']}');
+            });
+            //  startTimer();
+          } else {
+            setState(() {
+              questionAndAnswer = null;
+              logger.e('Not exit snapshot');
+            });
+          }
+        });
+      } else {
+        logger.e('Error');
+      }
+    });
+  }
+
   void _loadNextQuestion() {
     _timer.cancel();
     _timerDuration = 30;
     groupValues.clear();
-
     FirebaseFirestore.instance
         .collection('languages')
-        .doc() 
+        .doc()
         .get()
         .then((snapshot) {
       if (snapshot.exists) {
         setState(() {
-          questionAndAnswer = snapshot.data()!['questionsAndAnswers'];
+          questionAndAnswer = snapshot.data()!['questionAndAnswer'];
+          logger.e('que $questionAndAnswer');
         });
         startTimer();
       } else {
-       
         setState(() {
           questionAndAnswer = null;
         });
@@ -58,9 +92,6 @@ class _QuizAnswerScreenState extends State<QuizAnswerScreen> {
 
   @override
   Widget build(BuildContext context) {
-// final arguments = ModalRoute.of(context)!.settings.arguments;
-
-
     return Scaffold(
       appBar: AppBar(title: const Text('Quiz')),
       body: questionAndAnswer != null
@@ -76,16 +107,16 @@ class _QuizAnswerScreenState extends State<QuizAnswerScreen> {
                     ),
                   ),
                 ),
-                ListTile(
-                  title: Text(
-                    'Q. ${questionAndAnswer['question']}',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                if (questionAndAnswer.containsKey('answers') &&
+                // ListTile(
+                //   title: Text(
+                //     'Q. ${questionAndAnswer?['question'] ?? 'N/A'}',
+                //     style: const TextStyle(
+                //       fontSize: 18,
+                //       fontWeight: FontWeight.bold,
+                //     ),
+                //   ),
+                // ),
+                if (questionAndAnswer.contains('answers') &&
                     questionAndAnswer['answers'] is List<dynamic>)
                   Column(
                     children: [
@@ -107,8 +138,8 @@ class _QuizAnswerScreenState extends State<QuizAnswerScreen> {
                               ),
                               Expanded(
                                 child: RadioListTile(
-                                  key: Key(
-                                      '$answerIndex$_currentQuestionIndex'),
+                                  key:
+                                      Key('$answerIndex$_currentQuestionIndex'),
                                   title: Text(
                                     questionAndAnswer['answers'][answerIndex]
                                             ['answer']
@@ -126,8 +157,7 @@ class _QuizAnswerScreenState extends State<QuizAnswerScreen> {
                                               '$answerIndex$_currentQuestionIndex'
                                       ? Colors.blue
                                       : Colors.grey,
-                                  value:
-                                      '$answerIndex$_currentQuestionIndex',
+                                  value: '$answerIndex$_currentQuestionIndex',
                                   groupValue: groupValues.length > 0
                                       ? groupValues[0]
                                       : null,

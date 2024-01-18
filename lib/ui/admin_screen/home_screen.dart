@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ithub_quiz/constants/colors.dart';
 import 'package:ithub_quiz/ui/admin_screen/model/language_type.dart';
+import 'package:ithub_quiz/ui/admin_screen/model/snapShotData.dart';
 import 'package:ithub_quiz/ui/admin_screen/module/choice-module.dart';
 import 'package:ithub_quiz/ui/admin_screen/module/choice_route.dart';
 import 'package:ithub_quiz/ui/admin_screen/module/question_create/create_question_module.dart';
@@ -138,25 +139,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                     return InkWell(
                                       onTap: () {
-                                        if (widget.status == "home") {
-                                          userRole == 'Admin'
-                                              ? AppRouter.changeRoute<
-                                                      ChoiceFormModule>(
-                                                  ChoiceRoute.multiChoice,
-                                                  context: context,
-                                                  args: Languages(
-                                                      id: documentId,
-                                                      langType:
-                                                          data['lang-type']))
-                                              : AppRouter.changeRoute<
-                                                      ChoiceFormModule>(
-                                                  ChoiceRoute.quizAns,
-                                                  context: context,
-                                                  args: Languages(
-                                                      id: documentId,
-                                                      langType:
-                                                          data['lang-type']));
-                                        } else {
+                                        if (userRole.toLowerCase() == 'admin' &&
+                                            widget.status != 'home') {
                                           AppRouter.changeRoute<
                                                   CreateQuestionModule>(
                                               CreateQuestionRoutes.question,
@@ -164,6 +148,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                               args: Languages(
                                                   id: documentId,
                                                   langType: data['lang-type']));
+                                        } else {
+                                          AppRouter.changeRoute<
+                                                  ChoiceFormModule>(
+                                              ChoiceRoute.quizAns,
+                                              context: context,
+                                              args: SnapShotDataQue(
+                                                id: documentId,
+                                                langType: data['lang-type'],
+                                                questionAndAnswer:
+                                                    data['questionAndAnswer'] !=
+                                                            null
+                                                        ? List<dynamic>.from(data[
+                                                            'questionAndAnswer'])
+                                                        : null,
+                                              ));
+
+                                          //logger.e(data['questionAndAnswer']);
+                                     
                                         }
                                       },
                                       child: Container(
