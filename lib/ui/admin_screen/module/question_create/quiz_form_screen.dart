@@ -50,8 +50,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
           //_updateAnswerDataList(newIndex, controller.text);
         },
         answerDataList: (answerDataList) {
-          answerDataList.add(answerDataList);
-          answerList = answerDataList;
+          //answerDataList.add(answerDataList);
+          //answerList = answerDataList;
         },
       );
       answerRows.add(newAnswerRow);

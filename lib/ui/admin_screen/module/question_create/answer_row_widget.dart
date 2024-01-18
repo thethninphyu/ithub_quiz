@@ -28,17 +28,17 @@ class _AnswerRowState extends State<AnswerRow> {
   AnswerList thisisForClass = AnswerList(Answer(false, ""));
   TextEditingController textFieldController = TextEditingController();
 
-  void _addAnswerRow(int isChecked, String answer) {
-    logger.e(answer);
+  // void _addAnswerRow(int isChecked, String answer) {
+  //   logger.e(answer);
 
-    isChecked == 1 ? answerCheck = true : answerCheck = false;
+  //   isChecked == 1 ? answerCheck = true : answerCheck = false;
 
-    logger.e('Tempory radio value is  $isChecked and text is $answer');
+  //   logger.e('Tempory radio value is  $isChecked and text is $answer');
 
-    widget.answerDataList(Answer(answerCheck, answer).toJson());
+  //   widget.answerDataList(Answer(answerCheck, answer).toJson());
 
-    logger.e(temporaryList.toList().toString());
-  }
+  //   logger.e(temporaryList.toList().toString());
+  // }
 
   void _updateAnswerDataList(int index, int isChecked) {
     isChecked == 1 ? answerCheck = true : answerCheck = false;
@@ -88,7 +88,7 @@ class _AnswerRowState extends State<AnswerRow> {
               if (textFieldController.text.isNotEmpty) {
                 logger.e("Add Some Role");
                 widget.onControllerChanged(textFieldController);
-                _addAnswerRow(0, textFieldController.text);
+                //_addAnswerRow(0, textFieldController.text);
               }
             },
           ),
