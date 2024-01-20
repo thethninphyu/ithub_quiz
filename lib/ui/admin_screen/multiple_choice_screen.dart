@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:ithub_quiz/ui/admin_screen/dialog_util.dart';
 import 'package:ithub_quiz/ui/admin_screen/model/language_type.dart';
+import 'package:ithub_quiz/utils/app_logger.dart';
 
 class MultipleChoiceScreen extends StatefulWidget {
   const MultipleChoiceScreen({Key? key}) : super(key: key);
@@ -134,11 +135,11 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                         ? Colors.blue
                                                         : Colors.grey,
                                                     value: '$index$answerIndex',
-                                                    groupValue: groupValues
-                                                                .length >
-                                                            index
-                                                        ? groupValues[index]
-                                                        : null,
+                                                    groupValue:
+                                                        groupValues.length >
+                                                                index
+                                                            ? groupValues[index]
+                                                            : null,
                                                     onChanged: (selectedValue) {
                                                       setState(() {
                                                         // logger.e(
@@ -153,8 +154,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                                     answerIndex]
                                                                 ['isChecked'];
 
-                                                        if (groupValues
-                                                                .length >
+                                                        if (groupValues.length >
                                                             index) {
                                                           groupValues[index] =
                                                               selectedValue!;
@@ -171,7 +171,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
                                                               selectedValue!);
 
                                                           if (isChecked) {
-                                                           selectedAsnwer
+                                                            selectedAsnwer
                                                                 .add(1);
                                                           } else {
                                                             selectedAsnwer
@@ -235,6 +235,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
   void calculateResult() {
     int totalQuestions = questionAndAnswer.length;
     int countOfOnes = selectedAsnwer.where((value) => value == 1).length;
+    logger.e(countOfOnes);
 
     if (selectedAsnwer.length < totalQuestions) {
       ScaffoldMessenger.of(context).showSnackBar(

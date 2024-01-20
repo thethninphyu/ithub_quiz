@@ -16,7 +16,7 @@ class DialogUtils {
       dialogType: dialogType,
       width: width,
       buttonsBorderRadius: const BorderRadius.all(Radius.circular(2)),
-      dismissOnTouchOutside: true,
+      dismissOnTouchOutside: false,
       dismissOnBackKeyPress: false,
       headerAnimationLoop: false,
       title: title,

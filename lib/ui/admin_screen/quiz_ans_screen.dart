@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:ithub_quiz/ui/admin_screen/dialog_util.dart';
 import 'package:ithub_quiz/utils/app_logger.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,15 +23,16 @@ class _QuizAnswerScreenState extends State<QuizAnswerScreen>
 
   late AnimationController _answerAnimationController;
   late Animation<double> answerOpacityAnimation;
+  var finalBool = false;
 
   late Timer _timer;
   int _timerDuration = 10;
   dynamic questionAndAnswer;
+  List<int> selectedAnswer = [];
 
   @override
   void initState() {
     super.initState();
-
     _answerAnimationController =
         AnimationController(vsync: this, duration: const Duration(seconds: 2));
     answerOpacityAnimation = Tween(begin: 0.0, end: 1.0).animate(
@@ -91,11 +94,70 @@ class _QuizAnswerScreenState extends State<QuizAnswerScreen>
     startTimer();
   }
 
+  void calculateResult() {
+    int totalQuestions = questionAndAnswer.length;
+    int countOfOnes = selectedAnswer.where((value) => value == 1).length;
+    logger.e(selectedAnswer.toList());
+    // Do something with the totalScore, such as displaying it or storing it.
+
+    // if (selectedAnswer.length < totalQuestions) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(
+    //       content: Text('Please answer all questions before submitting.'),
+    //     ),
+    //   );
+    //   return;
+    // }
+
+    logger.e('Total Score: $countOfOnes');
+    double result = (countOfOnes / totalQuestions) * 100;
+    if (result < 0) {
+      Future.delayed(const Duration(milliseconds: 4000), () {
+        DialogUtils.createConfirmationDialog(
+            context: context,
+            title: 'Fail',
+            width: MediaQuery.of(context).size.width / 1.2 * 2,
+            dialogType: DialogType.warning,
+            description: 'Quiz result is $result',
+            showCancelButton: false,
+            onOkPressed: () {
+              Modular.to.pop();
+            }).show();
+      });
+    } else if (result >= 40 && result < 80) {
+      Future.delayed(const Duration(milliseconds: 4000), () {
+        DialogUtils.createConfirmationDialog(
+            context: context,
+            title: 'Pass',
+            width: MediaQuery.of(context).size.width / 1.2 * 2,
+            dialogType: DialogType.success,
+            description: 'Quiz result is $result',
+            showCancelButton: false,
+            onOkPressed: () {
+              Modular.to.pop();
+            }).show();
+      });
+    } else {
+      Future.delayed(const Duration(milliseconds: 4000), () {
+        DialogUtils.createConfirmationDialog(
+            context: context,
+            title: 'Distinction',
+            width: MediaQuery.of(context).size.width / 1.2 * 2,
+            dialogType: DialogType.success,
+            showCancelButton: false,
+            description: 'Quiz result is $result',
+            onOkPressed: () {
+              Modular.to.pop();
+            }).show();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: const Text('Quiz')),
-        body: questionAndAnswer != null
+        body: questionAndAnswer != null && finalBool == false
             ? PageView.builder(
                 scrollDirection: Axis.vertical,
                 controller: _pageController,
@@ -143,90 +205,88 @@ class _QuizAnswerScreenState extends State<QuizAnswerScreen>
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                InkWell(
-                                  onTap: () {
+                                TextButton(
+                                  onPressed: () {
+                                    logger.e(
+                                        "HEYYYY${answers?[ansIndex]['isChecked']}");
+                                    var isCorrect =
+                                        answers?[ansIndex]['isChecked'];
                                     if (qusIndex ==
                                         questionAndAnswer.length - 1) {
-                                      showDialog(
-                                        context: context,
-                                        builder: ((context) {
-                                          return Dialog(
-                                            child: DecoratedBox(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                gradient: LinearGradient(
-                                                  colors: [
-                                                    const Color(0xFFE64978),
-                                                    const Color(0xFFed8c41)
-                                                        .withOpacity(0.5),
-                                                    Colors.white
-                                                        .withOpacity(0.1),
-                                                    Colors.white,
-                                                  ],
-                                                  begin: Alignment.topCenter,
-                                                  end: Alignment.bottomCenter,
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        }),
-                                      );
+                                      Future.delayed(
+                                          const Duration(milliseconds: 1000),
+                                          () {
+                                        if (isCorrect == false) {
+                                          logger.e("iamWrongAnswer");
+                                          EasyLoading.showError(
+                                              "Incorrect Answer",
+                                              duration: const Duration(
+                                                  milliseconds: 3000),
+                                              dismissOnTap: true);
+                                          selectedAnswer.add(0);
+                                          _timer.cancel();
+                                        } else {
+                                          EasyLoading.showSuccess(
+                                              "Correct Answer",
+                                              duration: const Duration(
+                                                  milliseconds: 3000),
+                                              dismissOnTap: true);
+                                          selectedAnswer.add(1);
+                                          _timer.cancel();
+                                        }
+                                        calculateResult();
+                                      });
                                     } else {
-                                      _pageController.nextPage(
-                                        duration:
-                                            const Duration(milliseconds: 500),
-                                        curve: Curves.easeInOut,
-                                      );
-                                    }
-                                  },
-                                  child: TextButton(
-                                    onPressed: () {
-                                      var isCorrect =
-                                          answers?[ansIndex]['isChecked'];
-
                                       if (isCorrect == false) {
-                                        DialogUtils.createConfirmationDialog(
-                                          context: context,
-                                          title: 'Incorrect Answer',
-                                          dialogType: DialogType.warning,
-                                          description:
-                                              'Sorry, your answer is incorrect.',
-                                          onOkPressed: () {},
-                                          width: double.infinity,
-                                        ).show();
+                                        logger.e("iamWrongAnswer");
+                                        EasyLoading.showError(
+                                            "Incorrect Answer",
+                                            duration: const Duration(
+                                                milliseconds: 3000),
+                                            dismissOnTap: true);
+                                        selectedAnswer.add(0);
+                                      } else {
+                                        EasyLoading.showSuccess(
+                                            "Correct Answer",
+                                            duration: const Duration(
+                                                milliseconds: 3000),
+                                            dismissOnTap: true);
+                                        selectedAnswer.add(1);
                                       }
 
                                       _answerAnimationController.forward(
                                           from: 0.0);
 
-                                      _loadNextQuestion();
-                                    },
-                                    child: Card(
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 5),
-                                      child: SizedBox(
-                                        width: double.infinity,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(15.0),
-                                          child: AnimatedBuilder(
-                                            animation:
-                                                _answerAnimationController,
-                                            builder: (context, child) {
-                                              return Opacity(
-                                                opacity:
-                                                    _answerAnimationController
-                                                        .value,
-                                                child: Text(
-                                                  '$answer',
-                                                  style: const TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
+                                      Future.delayed(
+                                          const Duration(milliseconds: 3000),
+                                          () {
+                                        _loadNextQuestion();
+                                      });
+                                    }
+                                  },
+                                  child: Card(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 5),
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(15.0),
+                                        child: AnimatedBuilder(
+                                          animation: _answerAnimationController,
+                                          builder: (context, child) {
+                                            return Opacity(
+                                              opacity:
+                                                  _answerAnimationController
+                                                      .value,
+                                              child: Text(
+                                                '$answer',
+                                                style: const TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
                                                 ),
-                                              );
-                                            },
-                                          ),
+                                              ),
+                                            );
+                                          },
                                         ),
                                       ),
                                     ),
@@ -241,9 +301,7 @@ class _QuizAnswerScreenState extends State<QuizAnswerScreen>
                   );
                 },
               )
-            : const Center(
-                child: Text('No more question'),
-              ));
+            : const Center(child: Text("There is no data")));
   }
 
   void startTimer() {
